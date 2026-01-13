@@ -1,8 +1,10 @@
 <div align="center">
 
-# GET SHIT DONE
+# GET SHIT DONE (Cursor Edition)
 
-**A light-weight and powerful meta-prompting, context engineering and spec-driven development system for Claude Code and Cursor by TÂCHES.**
+**A light-weight and powerful meta-prompting, context engineering and spec-driven development system optimized for Cursor IDE.**
+
+> **Note:** This is a Cursor-focused fork of [get-shit-done](https://github.com/glittercowboy/get-shit-done) by TÂCHES, adapted with full Cursor IDE support.
 
 [![npm version](https://img.shields.io/npm/v/get-shit-done-cc?style=for-the-badge&logo=npm&logoColor=white&color=CB3837)](https://www.npmjs.com/package/get-shit-done-cc)
 [![npm downloads](https://img.shields.io/npm/dm/get-shit-done-cc?style=for-the-badge&logo=npm&logoColor=white&color=CB3837)](https://www.npmjs.com/package/get-shit-done-cc)
@@ -12,7 +14,7 @@
 <br>
 
 ```bash
-npx get-shit-done-cc
+npx get-shit-done-cursor
 ```
 
 **Works on Mac, Windows, and Linux.**
@@ -81,7 +83,12 @@ People who want to describe what they want and have it built correctly — witho
 
 **Recommended for Cursor users:**
 ```bash
-npx get-shit-done-cc --cursor --local
+npx get-shit-done-cursor --cursor --local
+```
+
+Or use the shorter alias:
+```bash
+npx gsd-cursor --cursor --local
 ```
 
 This installs GSD to your project's `.cursor/` directory. After installation:
@@ -91,22 +98,16 @@ This installs GSD to your project's `.cursor/` directory. After installation:
 
 **For global installation (available in all projects):**
 ```bash
-npx get-shit-done-cc --cursor --global
+npx get-shit-done-cursor --cursor --global
 ```
 
 This installs to `~/.cursor/` and makes GSD available in all your Cursor projects.
 
 ### Quick Install for Claude Code
 
-```bash
-npx get-shit-done-cc
-```
+> **Note:** For Claude Code, use the original package: `npx get-shit-done-cursor`
 
-Or use the interactive installer:
-```bash
-npx get-shit-done-cc --local    # Project-specific
-npx get-shit-done-cc --global  # All projects
-```
+This Cursor edition focuses on Cursor IDE. For Claude Code support, please use the [original repository](https://github.com/glittercowboy/get-shit-done).
 
 That's it. Verify with `/gsd:help` inside your Cursor or Claude Code interface.
 
@@ -115,14 +116,14 @@ That's it. Verify with `/gsd:help` inside your Cursor or Claude Code interface.
 
 **Claude Code:**
 ```bash
-npx get-shit-done-cc --global   # Install to ~/.claude/
-npx get-shit-done-cc --local    # Install to ./.claude/
+npx get-shit-done-cursor --global   # Install to ~/.claude/
+npx get-shit-done-cursor --local    # Install to ./.claude/
 ```
 
 **Cursor IDE:**
 ```bash
-npx get-shit-done-cc --cursor --global   # Install to ~/.cursor/
-npx get-shit-done-cc --cursor --local    # Install to ./.cursor/
+npx get-shit-done-cursor --cursor --global   # Install to ~/.cursor/
+npx get-shit-done-cursor --cursor --local    # Install to ./.cursor/
 ```
 
 Use `--global` (`-g`) or `--local` (`-l`) to skip the interactive prompt.
@@ -280,7 +281,7 @@ Already have code? GSD works great with existing codebases.
 
 ```bash
 cd your-existing-project
-npx get-shit-done-cc --cursor --local
+npx get-shit-done-cursor --cursor --local
 ```
 
 ### 2. Map the codebase
@@ -445,12 +446,11 @@ You're never locked in. The system adapts.
 
 **Commands not working as expected?**
 - Run `/gsd:help` to verify installation
-- Re-run `npx get-shit-done-cc` (or `npx get-shit-done-cc --cursor` for Cursor) to reinstall
+- Re-run `npx get-shit-done-cursor --cursor --local` to reinstall
 
 **Updating to the latest version?**
 ```bash
-npx get-shit-done-cc@latest              # Claude Code
-npx get-shit-done-cc@latest --cursor     # Cursor
+npx get-shit-done-cursor@latest --cursor --local
 ```
 
 **Using Docker or containerized environments?**
@@ -459,12 +459,12 @@ If file reads fail with tilde paths, set the appropriate config directory before
 
 **Claude Code:**
 ```bash
-CLAUDE_CONFIG_DIR=/home/youruser/.claude npx get-shit-done-cc --global
+CLAUDE_CONFIG_DIR=/home/youruser/.claude npx get-shit-done-cursor --global
 ```
 
 **Cursor:**
 ```bash
-CURSOR_CONFIG_DIR=/home/youruser/.cursor npx get-shit-done-cc --cursor --global
+CURSOR_CONFIG_DIR=/home/youruser/.cursor npx get-shit-done-cursor --cursor --global
 ```
 
 This ensures absolute paths are used instead of `~` which may not expand correctly in containers.
@@ -491,6 +491,14 @@ MIT License. See [LICENSE](LICENSE) for details.
 
 <div align="center">
 
-**Claude Code and Cursor are powerful. GSD makes them reliable.**
+**Cursor is powerful. GSD makes it reliable.**
 
 </div>
+
+---
+
+## Credits
+
+This is a Cursor-focused fork of [get-shit-done](https://github.com/glittercowboy/get-shit-done) by [TÂCHES](https://github.com/glittercowboy). 
+
+Original work by TÂCHES. Cursor adaptation and enhancements by [heyaryansingh](https://github.com/heyaryansingh).

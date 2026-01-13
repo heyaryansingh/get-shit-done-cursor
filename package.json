@@ -1,9 +1,10 @@
 {
-  "name": "get-shit-done-cc",
-  "version": "1.4.4",
-  "description": "A meta-prompting, context engineering and spec-driven development system for Claude Code and Cursor by TÂCHES.",
+  "name": "get-shit-done-cursor",
+  "version": "1.4.4-cursor",
+  "description": "A meta-prompting, context engineering and spec-driven development system for Cursor IDE. Forked from get-shit-done-cc with Cursor support.",
   "bin": {
-    "get-shit-done-cc": "bin/install.js"
+    "get-shit-done-cursor": "bin/install.js",
+    "gsd-cursor": "bin/install.js"
   },
   "files": [
     "bin",
@@ -24,7 +25,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/glittercowboy/get-shit-done.git"
+    "url": "git+https://github.com/heyaryansingh/get-shit-done-cursor.git"
   },
   "engines": {
     "node": ">=16.7.0"
