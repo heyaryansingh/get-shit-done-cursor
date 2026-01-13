@@ -6,15 +6,15 @@
 
 > **Note:** This is a Cursor-focused fork of [get-shit-done](https://github.com/glittercowboy/get-shit-done) by TÂCHES, adapted with full Cursor IDE support.
 
-[![npm version](https://img.shields.io/npm/v/get-shit-done-cc?style=for-the-badge&logo=npm&logoColor=white&color=CB3837)](https://www.npmjs.com/package/get-shit-done-cc)
-[![npm downloads](https://img.shields.io/npm/dm/get-shit-done-cc?style=for-the-badge&logo=npm&logoColor=white&color=CB3837)](https://www.npmjs.com/package/get-shit-done-cc)
+[![npm version](https://img.shields.io/npm/v/get-shit-done-cursor?style=for-the-badge&logo=npm&logoColor=white&color=CB3837)](https://www.npmjs.com/package/get-shit-done-cursor)
+[![npm downloads](https://img.shields.io/npm/dm/get-shit-done-cursor?style=for-the-badge&logo=npm&logoColor=white&color=CB3837)](https://www.npmjs.com/package/get-shit-done-cursor)
 [![License](https://img.shields.io/badge/license-MIT-blue?style=for-the-badge)](LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/glittercowboy/get-shit-done?style=for-the-badge&logo=github&color=181717)](https://github.com/glittercowboy/get-shit-done)
+[![GitHub stars](https://img.shields.io/github/stars/heyaryansingh/get-shit-done-cursor?style=for-the-badge&logo=github&color=181717)](https://github.com/heyaryansingh/get-shit-done-cursor)
 
 <br>
 
 ```bash
-npx get-shit-done-cursor
+npx get-shit-done-cursor --cursor --local
 ```
 
 **Works on Mac, Windows, and Linux.**
@@ -81,7 +81,7 @@ People who want to describe what they want and have it built correctly — witho
 
 ### Quick Install for Cursor
 
-**Recommended for Cursor users:**
+**Install in any Cursor project:**
 ```bash
 npx get-shit-done-cursor --cursor --local
 ```
@@ -91,7 +91,7 @@ Or use the shorter alias:
 npx gsd-cursor --cursor --local
 ```
 
-This installs GSD to your project's `.cursor/` directory. After installation:
+**After installation:**
 1. **Restart Cursor** to reload slash commands
 2. Open the Cursor chat (Ctrl+L or Cmd+L)
 3. Type `/gsd:help` to verify it's working
@@ -101,11 +101,16 @@ This installs GSD to your project's `.cursor/` directory. After installation:
 npx get-shit-done-cursor --cursor --global
 ```
 
-This installs to `~/.cursor/` and makes GSD available in all your Cursor projects.
+This installs to `~/.cursor/` and makes GSD available in all your Cursor projects without reinstalling.
+
+**Alternative: Install from GitHub:**
+```bash
+npx github:heyaryansingh/get-shit-done-cursor --cursor --local
+```
 
 ### Quick Install for Claude Code
 
-> **Note:** For Claude Code, use the original package: `npx get-shit-done-cursor`
+> **Note:** For Claude Code, use the original package: `npx get-shit-done-cc`
 
 This Cursor edition focuses on Cursor IDE. For Claude Code support, please use the [original repository](https://github.com/glittercowboy/get-shit-done).
 
@@ -116,8 +121,9 @@ That's it. Verify with `/gsd:help` inside your Cursor or Claude Code interface.
 
 **Claude Code:**
 ```bash
-npx get-shit-done-cursor --global   # Install to ~/.claude/
-npx get-shit-done-cursor --local    # Install to ./.claude/
+# Use original package for Claude Code
+npx get-shit-done-cc --global   # Install to ~/.claude/
+npx get-shit-done-cc --local    # Install to ./.claude/
 ```
 
 **Cursor IDE:**
@@ -224,19 +230,22 @@ If you prefer not to use that flag, add this to your project's `.claude/settings
 
 ## How It Works
 
-GSD works seamlessly in Cursor. Just install and start using slash commands in the Cursor chat.
+GSD works seamlessly in Cursor. Install once per project, then use slash commands in the Cursor chat.
 
-### 1. Start with an idea
+### Quick Start Workflow
 
-In Cursor, type:
+**1. Start with an idea**
+
+In Cursor chat, type:
 ```
 /gsd:new-project
 ```
 
-The system asks questions. Keeps asking until it has everything — your goals, constraints, tech preferences, edge cases. You go back and forth until the idea is fully captured. Creates **PROJECT.md**.
+The system asks questions about your goals, constraints, tech preferences, and edge cases. Keeps asking until everything is captured. Creates **PROJECT.md** in `.planning/`.
 
-### 2. Create roadmap
+**2. Create roadmap**
 
+In Cursor chat:
 ```
 /gsd:create-roadmap
 ```
@@ -245,14 +254,14 @@ Produces:
 - **ROADMAP.md** — Phases from start to finish
 - **STATE.md** — Living memory that persists across sessions
 
-### 3. Plan and execute phases
+**3. Plan and execute phases**
 
 ```
 /gsd:plan-phase 1      # System creates atomic task plans
-/gsd:execute-plan      # Subagent implements autonomously
+/gsd:execute-plan .planning/phases/01-foundation/01-01-PLAN.md
 ```
 
-Each phase breaks into 2-3 atomic tasks. Each task runs in a fresh subagent context — 200k tokens purely for implementation, zero degradation.
+Each phase breaks into 2-3 atomic tasks. Each task runs in a fresh context — 200k tokens purely for implementation, zero degradation.
 
 **For multi-plan phases:**
 ```
@@ -261,7 +270,7 @@ Each phase breaks into 2-3 atomic tasks. Each task runs in a fresh subagent cont
 
 Use `/gsd:execute-plan` for interactive single-plan execution with checkpoints. Use `/gsd:execute-phase` when you have multiple plans and want parallel "walk away" automation.
 
-### 4. Ship and iterate
+**4. Ship and iterate**
 
 ```
 /gsd:complete-milestone   # Archive v1, prep for v2
@@ -273,49 +282,74 @@ Ship your MVP in a day. Add features. Insert hotfixes. The system stays modular 
 
 ---
 
-## Using GSD in Existing Projects
+## Using GSD in Your Cursor Projects
 
-Already have code? GSD works great with existing codebases.
+### For New Projects
 
-### 1. Install GSD in your project
+1. **Create your project folder:**
+   ```bash
+   mkdir my-awesome-project
+   cd my-awesome-project
+   ```
 
-```bash
-cd your-existing-project
-npx get-shit-done-cursor --cursor --local
-```
+2. **Install GSD:**
+   ```bash
+   npx get-shit-done-cursor --cursor --local
+   ```
 
-### 2. Map the codebase
+3. **Restart Cursor** and open your project
 
-In Cursor, type:
-```
-/gsd:map-codebase
-```
+4. **Start using GSD commands:**
+   - `/gsd:new-project` - Initialize your project
+   - `/gsd:create-roadmap` - Create your development roadmap
+   - `/gsd:plan-phase 1` - Plan the first phase
+   - `/gsd:execute-plan` - Execute your plans
 
-Spawns parallel agents to analyze your code. Creates `.planning/codebase/` with 7 documents:
+### For Existing Projects
 
-| Document | Purpose |
-|----------|---------|
-| `STACK.md` | Languages, frameworks, dependencies |
-| `ARCHITECTURE.md` | Patterns, layers, data flow |
-| `STRUCTURE.md` | Directory layout, where things live |
-| `CONVENTIONS.md` | Code style, naming patterns |
-| `TESTING.md` | Test framework, patterns |
-| `INTEGRATIONS.md` | External services, APIs |
-| `CONCERNS.md` | Tech debt, known issues, fragile areas |
+1. **Navigate to your project:**
+   ```bash
+   cd your-existing-project
+   ```
 
-### 3. Initialize project
+2. **Install GSD:**
+   ```bash
+   npx get-shit-done-cursor --cursor --local
+   ```
 
-```
-/gsd:new-project
-```
+3. **Restart Cursor** and open your project
 
-Same as greenfield, but the system knows your codebase. Questions focus on what you're adding/changing, not starting from scratch.
+4. **Map your existing codebase:**
+   In Cursor chat, type:
+   ```
+   /gsd:map-codebase
+   ```
+   
+   This analyzes your codebase and creates `.planning/codebase/` with 7 documents:
+   
+   | Document | Purpose |
+   |----------|---------|
+   | `STACK.md` | Languages, frameworks, dependencies |
+   | `ARCHITECTURE.md` | Patterns, layers, data flow |
+   | `STRUCTURE.md` | Directory layout, where things live |
+   | `CONVENTIONS.md` | Code style, naming patterns |
+   | `TESTING.md` | Test framework, patterns |
+   | `INTEGRATIONS.md` | External services, APIs |
+   | `CONCERNS.md` | Tech debt, known issues, fragile areas |
 
-### 4. Continue as normal
+5. **Initialize project:**
+   ```
+   /gsd:new-project
+   ```
+   
+   The system now knows your codebase. Questions focus on what you're adding/changing.
 
-From here, it's the same: `/gsd:create-roadmap` → `/gsd:plan-phase` → `/gsd:execute-plan`
-
-The codebase docs load automatically during planning. The AI knows your patterns, conventions, and where to put things.
+6. **Continue as normal:**
+   - `/gsd:create-roadmap` - Create roadmap
+   - `/gsd:plan-phase 1` - Plan phases
+   - `/gsd:execute-plan` - Execute plans
+   
+   The codebase docs load automatically during planning. The AI knows your patterns, conventions, and where to put things.
 
 ---
 
@@ -439,10 +473,9 @@ You're never locked in. The system adapts.
 ## Troubleshooting
 
 **Commands not found after install?**
-- Restart Claude Code or Cursor to reload slash commands
-- Verify files exist:
-  - Claude Code: `~/.claude/commands/gsd/` (global) or `./.claude/commands/gsd/` (local)
-  - Cursor: `~/.cursor/commands/gsd/` (global) or `./.cursor/commands/gsd/` (local)
+- **Restart Cursor** - This is required! Close and reopen Cursor after installation
+- Verify files exist: `./.cursor/commands/gsd/` (local) or `~/.cursor/commands/gsd/` (global)
+- Make sure you're in the project directory where you ran the install command
 
 **Commands not working as expected?**
 - Run `/gsd:help` to verify installation
@@ -459,7 +492,8 @@ If file reads fail with tilde paths, set the appropriate config directory before
 
 **Claude Code:**
 ```bash
-CLAUDE_CONFIG_DIR=/home/youruser/.claude npx get-shit-done-cursor --global
+# Use original package for Claude Code
+CLAUDE_CONFIG_DIR=/home/youruser/.claude npx get-shit-done-cc --global
 ```
 
 **Cursor:**
@@ -473,11 +507,11 @@ This ensures absolute paths are used instead of `~` which may not expand correct
 
 ## Star History
 
-<a href="https://star-history.com/#glittercowboy/get-shit-done&Date">
+<a href="https://star-history.com/#heyaryansingh/get-shit-done-cursor&Date">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=glittercowboy/get-shit-done&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=glittercowboy/get-shit-done&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=glittercowboy/get-shit-done&type=Date" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=heyaryansingh/get-shit-done-cursor&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=heyaryansingh/get-shit-done-cursor&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=heyaryansingh/get-shit-done-cursor&type=Date" />
  </picture>
 </a>
 
