@@ -2,7 +2,7 @@
 
 # GET SHIT DONE
 
-**A light-weight and powerful meta-prompting, context engineering and spec-driven development system for Claude Code by TÂCHES.**
+**A light-weight and powerful meta-prompting, context engineering and spec-driven development system for Claude Code and Cursor by TÂCHES.**
 
 [![npm version](https://img.shields.io/npm/v/get-shit-done-cc?style=for-the-badge&logo=npm&logoColor=white&color=CB3837)](https://www.npmjs.com/package/get-shit-done-cc)
 [![npm downloads](https://img.shields.io/npm/dm/get-shit-done-cc?style=for-the-badge&logo=npm&logoColor=white&color=CB3837)](https://www.npmjs.com/package/get-shit-done-cc)
@@ -17,6 +17,8 @@ npx get-shit-done-cc
 
 **Works on Mac, Windows, and Linux.**
 
+**✨ Now fully supported for Cursor IDE!**
+
 <br>
 
 ![GSD Install](assets/terminal.svg)
@@ -27,7 +29,7 @@ npx get-shit-done-cc
 
 *"I've done SpecKit, OpenSpec and Taskmaster — this has produced the best results for me."*
 
-*"By far the most powerful addition to my Claude Code. Nothing over-engineered. Literally just gets shit done."*
+*"By far the most powerful addition to my Claude Code and Cursor. Nothing over-engineered. Literally just gets shit done."*
 
 <br>
 
@@ -41,7 +43,7 @@ npx get-shit-done-cc
 
 ## Why I Built This
 
-I'm a solo developer. I don't write code — Claude Code does.
+I'm a solo developer. I don't write code — AI does.
 
 Other spec-driven development tools exist; BMAD, Speckit... But they all seem to make things way more complicated than they need to be (sprint ceremonies, story points, stakeholder syncs, retrospectives, Jira workflows) or lack real big picture understanding of what you're building. I'm not a 50-person software company. I don't want to play enterprise theater. I'm just a creative person trying to build great things that work.
 
@@ -49,7 +51,7 @@ So I built GSD. The complexity is in the system, not in your workflow. Behind th
 
 The system gives Claude everything it needs to do the work *and* verify it. I trust the workflow. It just does a good job.
 
-That's what this is. No enterprise roleplay bullshit. Just an incredibly effective system for building cool stuff consistently using Claude Code.
+That's what this is. No enterprise roleplay bullshit. Just an incredibly effective system for building cool stuff consistently using AI-powered IDEs like Cursor and Claude Code.
 
 — **TÂCHES**
 
@@ -57,7 +59,7 @@ That's what this is. No enterprise roleplay bullshit. Just an incredibly effecti
 
 Vibecoding has a bad reputation. You describe what you want, AI generates code, and you get inconsistent garbage that falls apart at scale.
 
-GSD fixes that. It's the context engineering layer that makes Claude Code reliable. Describe your idea, let the system extract everything it needs to know, and let Claude Code get to work.
+GSD fixes that. It's the context engineering layer that makes AI-powered development reliable. Describe your idea, let the system extract everything it needs to know, and let Cursor or Claude Code get to work.
 
 ---
 
@@ -65,22 +67,62 @@ GSD fixes that. It's the context engineering layer that makes Claude Code reliab
 
 People who want to describe what they want and have it built correctly — without pretending they're running a 50-person engineering org.
 
+**Perfect for:**
+- Cursor users who want structured, reliable AI-assisted development
+- Solo developers building MVPs and side projects
+- Teams using AI coding assistants who need better context management
+- Anyone tired of inconsistent AI-generated code
+
 ---
 
 ## Getting Started
+
+### Quick Install for Cursor
+
+**Recommended for Cursor users:**
+```bash
+npx get-shit-done-cc --cursor --local
+```
+
+This installs GSD to your project's `.cursor/` directory. After installation:
+1. **Restart Cursor** to reload slash commands
+2. Open the Cursor chat (Ctrl+L or Cmd+L)
+3. Type `/gsd:help` to verify it's working
+
+**For global installation (available in all projects):**
+```bash
+npx get-shit-done-cc --cursor --global
+```
+
+This installs to `~/.cursor/` and makes GSD available in all your Cursor projects.
+
+### Quick Install for Claude Code
 
 ```bash
 npx get-shit-done-cc
 ```
 
-That's it. Verify with `/gsd:help` inside your Claude Code interface.
+Or use the interactive installer:
+```bash
+npx get-shit-done-cc --local    # Project-specific
+npx get-shit-done-cc --global  # All projects
+```
+
+That's it. Verify with `/gsd:help` inside your Cursor or Claude Code interface.
 
 <details>
 <summary><strong>Non-interactive Install (Docker, CI, Scripts)</strong></summary>
 
+**Claude Code:**
 ```bash
 npx get-shit-done-cc --global   # Install to ~/.claude/
 npx get-shit-done-cc --local    # Install to ./.claude/
+```
+
+**Cursor IDE:**
+```bash
+npx get-shit-done-cc --cursor --global   # Install to ~/.cursor/
+npx get-shit-done-cc --cursor --local    # Install to ./.cursor/
 ```
 
 Use `--global` (`-g`) or `--local` (`-l`) to skip the interactive prompt.
@@ -102,19 +144,50 @@ Installs to `./.claude/` for testing modifications before contributing.
 
 </details>
 
-### Recommended: Skip Permissions Mode
+### Cursor Setup
 
-GSD is designed for frictionless automation. Run Claude Code with:
+**No additional configuration needed!** Cursor has permissive defaults that work well with GSD out of the box.
 
+If you encounter permission prompts, you can configure them in your project's `.cursor/settings.json`:
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "Bash(date:*)",
+      "Bash(echo:*)",
+      "Bash(cat:*)",
+      "Bash(ls:*)",
+      "Bash(mkdir:*)",
+      "Bash(wc:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(sort:*)",
+      "Bash(grep:*)",
+      "Bash(tr:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git status:*)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)",
+      "Bash(git tag:*)"
+    ]
+  }
+}
+```
+
+### Claude Code Setup
+
+**For Claude Code:**
 ```bash
 claude --dangerously-skip-permissions
 ```
 
 > [!TIP]
-> This is how GSD is intended to be used — stopping to approve `date` and `git commit` 50 times defeats the purpose.
+> GSD is designed for frictionless automation — stopping to approve `date` and `git commit` 50 times defeats the purpose.
 
 <details>
-<summary><strong>Alternative: Granular Permissions</strong></summary>
+<summary><strong>Alternative: Granular Permissions (Claude Code)</strong></summary>
 
 If you prefer not to use that flag, add this to your project's `.claude/settings.json`:
 
@@ -150,8 +223,11 @@ If you prefer not to use that flag, add this to your project's `.claude/settings
 
 ## How It Works
 
+GSD works seamlessly in Cursor. Just install and start using slash commands in the Cursor chat.
+
 ### 1. Start with an idea
 
+In Cursor, type:
 ```
 /gsd:new-project
 ```
@@ -196,12 +272,20 @@ Ship your MVP in a day. Add features. Insert hotfixes. The system stays modular 
 
 ---
 
-## Existing Projects (Brownfield)
+## Using GSD in Existing Projects
 
-Already have code? Start here instead.
+Already have code? GSD works great with existing codebases.
 
-### 1. Map the codebase
+### 1. Install GSD in your project
 
+```bash
+cd your-existing-project
+npx get-shit-done-cc --cursor --local
+```
+
+### 2. Map the codebase
+
+In Cursor, type:
 ```
 /gsd:map-codebase
 ```
@@ -218,7 +302,7 @@ Spawns parallel agents to analyze your code. Creates `.planning/codebase/` with 
 | `INTEGRATIONS.md` | External services, APIs |
 | `CONCERNS.md` | Tech debt, known issues, fragile areas |
 
-### 2. Initialize project
+### 3. Initialize project
 
 ```
 /gsd:new-project
@@ -226,11 +310,11 @@ Spawns parallel agents to analyze your code. Creates `.planning/codebase/` with 
 
 Same as greenfield, but the system knows your codebase. Questions focus on what you're adding/changing, not starting from scratch.
 
-### 3. Continue as normal
+### 4. Continue as normal
 
 From here, it's the same: `/gsd:create-roadmap` → `/gsd:plan-phase` → `/gsd:execute-plan`
 
-The codebase docs load automatically during planning. Claude knows your patterns, conventions, and where to put things.
+The codebase docs load automatically during planning. The AI knows your patterns, conventions, and where to put things.
 
 ---
 
@@ -238,7 +322,7 @@ The codebase docs load automatically during planning. Claude knows your patterns
 
 ### Context Engineering
 
-Claude Code is incredibly powerful *if* you give it the context it needs. Most people don't.
+Cursor and Claude Code are incredibly powerful *if* you give them the context they need. Most people don't.
 
 GSD handles it for you:
 
@@ -252,7 +336,7 @@ GSD handles it for you:
 | `ISSUES.md` | Deferred enhancements tracked across sessions |
 | `todos/` | Captured ideas and tasks for later work |
 
-Size limits based on where Claude's quality degrades. Stay under, get consistent excellence.
+Size limits based on where AI quality degrades. Stay under, get consistent excellence.
 
 ### XML Prompt Formatting
 
@@ -276,9 +360,9 @@ Precise instructions. No guessing. Verification built in.
 
 ### Subagent Execution
 
-As Claude fills its context window, quality degrades. You've seen it: *"Due to context limits, I'll be more concise now."* That "concision" is code for cutting corners.
+As AI fills its context window, quality degrades. You've seen it: *"Due to context limits, I'll be more concise now."* That "concision" is code for cutting corners.
 
-GSD prevents this. Each plan is maximum 3 tasks. Each plan runs in a fresh subagent — 200k tokens purely for implementation, zero accumulated garbage.
+GSD prevents this. Each plan is maximum 3 tasks. Each plan runs in a fresh context — 200k tokens purely for implementation, zero accumulated garbage.
 
 | Task | Context | Quality |
 |------|---------|---------|
@@ -300,7 +384,7 @@ lmn012o feat(08-02): create registration endpoint
 ```
 
 > [!NOTE]
-> **Benefits:** Git bisect finds exact failing task. Each task independently revertable. Clear history for Claude in future sessions. Better observability in AI-automated workflow.
+> **Benefits:** Git bisect finds exact failing task. Each task independently revertable. Clear history for AI in future sessions. Better observability in AI-automated workflow.
 
 Every commit is surgical, traceable, and meaningful.
 
@@ -354,24 +438,35 @@ You're never locked in. The system adapts.
 ## Troubleshooting
 
 **Commands not found after install?**
-- Restart Claude Code to reload slash commands
-- Verify files exist in `~/.claude/commands/gsd/` (global) or `./.claude/commands/gsd/` (local)
+- Restart Claude Code or Cursor to reload slash commands
+- Verify files exist:
+  - Claude Code: `~/.claude/commands/gsd/` (global) or `./.claude/commands/gsd/` (local)
+  - Cursor: `~/.cursor/commands/gsd/` (global) or `./.cursor/commands/gsd/` (local)
 
 **Commands not working as expected?**
 - Run `/gsd:help` to verify installation
-- Re-run `npx get-shit-done-cc` to reinstall
+- Re-run `npx get-shit-done-cc` (or `npx get-shit-done-cc --cursor` for Cursor) to reinstall
 
 **Updating to the latest version?**
 ```bash
-npx get-shit-done-cc@latest
+npx get-shit-done-cc@latest              # Claude Code
+npx get-shit-done-cc@latest --cursor     # Cursor
 ```
 
 **Using Docker or containerized environments?**
 
-If file reads fail with tilde paths (`~/.claude/...`), set `CLAUDE_CONFIG_DIR` before installing:
+If file reads fail with tilde paths, set the appropriate config directory before installing:
+
+**Claude Code:**
 ```bash
 CLAUDE_CONFIG_DIR=/home/youruser/.claude npx get-shit-done-cc --global
 ```
+
+**Cursor:**
+```bash
+CURSOR_CONFIG_DIR=/home/youruser/.cursor npx get-shit-done-cc --cursor --global
+```
+
 This ensures absolute paths are used instead of `~` which may not expand correctly in containers.
 
 ---
@@ -396,6 +491,6 @@ MIT License. See [LICENSE](LICENSE) for details.
 
 <div align="center">
 
-**Claude Code is powerful. GSD makes it reliable.**
+**Claude Code and Cursor are powerful. GSD makes them reliable.**
 
 </div>

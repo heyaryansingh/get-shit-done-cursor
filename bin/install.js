@@ -25,13 +25,14 @@ ${cyan}   ██████╗ ███████╗██████╗
 
   Get Shit Done ${dim}v${pkg.version}${reset}
   A meta-prompting, context engineering and spec-driven
-  development system for Claude Code by TÂCHES.
+  development system for Claude Code and Cursor by TÂCHES.
 `;
 
 // Parse args
 const args = process.argv.slice(2);
 const hasGlobal = args.includes('--global') || args.includes('-g');
 const hasLocal = args.includes('--local') || args.includes('-l');
+const hasCursor = args.includes('--cursor');
 
 // Parse --config-dir argument
 function parseConfigDirArg() {
@@ -62,28 +63,35 @@ if (hasHelp) {
   console.log(`  ${yellow}Usage:${reset} npx get-shit-done-cc [options]
 
   ${yellow}Options:${reset}
-    ${cyan}-g, --global${reset}              Install globally (to Claude config directory)
-    ${cyan}-l, --local${reset}               Install locally (to ./.claude in current directory)
-    ${cyan}-c, --config-dir <path>${reset}   Specify custom Claude config directory
+    ${cyan}-g, --global${reset}              Install globally (to config directory)
+    ${cyan}-l, --local${reset}               Install locally (to ./.claude or ./.cursor)
+    ${cyan}--cursor${reset}                   Install for Cursor IDE (default: Claude Code)
+    ${cyan}-c, --config-dir <path>${reset}   Specify custom config directory
     ${cyan}-h, --help${reset}                Show this help message
 
   ${yellow}Examples:${reset}
-    ${dim}# Install to default ~/.claude directory${reset}
+    ${dim}# Install to default ~/.claude directory (Claude Code)${reset}
     npx get-shit-done-cc --global
 
-    ${dim}# Install to custom config directory (for multiple Claude accounts)${reset}
+    ${dim}# Install to ~/.cursor directory (Cursor IDE)${reset}
+    npx get-shit-done-cc --cursor --global
+
+    ${dim}# Install to custom config directory${reset}
     npx get-shit-done-cc --global --config-dir ~/.claude-bc
 
-    ${dim}# Using environment variable${reset}
+    ${dim}# Using environment variable (Claude Code)${reset}
     CLAUDE_CONFIG_DIR=~/.claude-bc npx get-shit-done-cc --global
+
+    ${dim}# Using environment variable (Cursor)${reset}
+    CURSOR_CONFIG_DIR=~/.cursor-custom npx get-shit-done-cc --cursor --global
 
     ${dim}# Install to current project only${reset}
     npx get-shit-done-cc --local
+    npx get-shit-done-cc --cursor --local
 
   ${yellow}Notes:${reset}
-    The --config-dir option is useful when you have multiple Claude Code
-    configurations (e.g., for different subscriptions). It takes priority
-    over the CLAUDE_CONFIG_DIR environment variable.
+    The --config-dir option takes priority over environment variables.
+    Use --cursor flag to install for Cursor IDE instead of Claude Code.
 `);
   process.exit(0);
 }
@@ -101,7 +109,7 @@ function expandTilde(filePath) {
 /**
  * Recursively copy directory, replacing paths in .md files
  */
-function copyWithPathReplacement(srcDir, destDir, pathPrefix) {
+function copyWithPathReplacement(srcDir, destDir, pathPrefix, isCursor) {
   fs.mkdirSync(destDir, { recursive: true });
 
   const entries = fs.readdirSync(srcDir, { withFileTypes: true });
@@ -111,11 +119,17 @@ function copyWithPathReplacement(srcDir, destDir, pathPrefix) {
     const destPath = path.join(destDir, entry.name);
 
     if (entry.isDirectory()) {
-      copyWithPathReplacement(srcPath, destPath, pathPrefix);
+      copyWithPathReplacement(srcPath, destPath, pathPrefix, isCursor);
     } else if (entry.name.endsWith('.md')) {
       // Replace ~/.claude/ with the appropriate prefix in markdown files
       let content = fs.readFileSync(srcPath, 'utf8');
-      content = content.replace(/~\/\.claude\//g, pathPrefix);
+      if (isCursor) {
+        // Replace ~/.claude/ with ~/.cursor/ for Cursor
+        content = content.replace(/~\/\.claude\//g, pathPrefix);
+      } else {
+        // Keep ~/.claude/ for Claude Code
+        content = content.replace(/~\/\.claude\//g, pathPrefix);
+      }
       fs.writeFileSync(destPath, content);
     } else {
       fs.copyFileSync(srcPath, destPath);
@@ -128,43 +142,57 @@ function copyWithPathReplacement(srcDir, destDir, pathPrefix) {
  */
 function install(isGlobal) {
   const src = path.join(__dirname, '..');
-  // Priority: explicit --config-dir arg > CLAUDE_CONFIG_DIR env var > default ~/.claude
-  const configDir = expandTilde(explicitConfigDir) || expandTilde(process.env.CLAUDE_CONFIG_DIR);
-  const defaultGlobalDir = configDir || path.join(os.homedir(), '.claude');
-  const claudeDir = isGlobal
+  
+  // Determine target platform and directory
+  const isCursor = hasCursor;
+  const defaultDirName = isCursor ? '.cursor' : '.claude';
+  
+  // Priority: explicit --config-dir arg > platform-specific env var > default
+  let configDir;
+  if (explicitConfigDir) {
+    configDir = expandTilde(explicitConfigDir);
+  } else if (isCursor) {
+    configDir = expandTilde(process.env.CURSOR_CONFIG_DIR);
+  } else {
+    configDir = expandTilde(process.env.CLAUDE_CONFIG_DIR);
+  }
+  
+  const defaultGlobalDir = configDir || path.join(os.homedir(), defaultDirName);
+  const targetDir = isGlobal
     ? defaultGlobalDir
-    : path.join(process.cwd(), '.claude');
+    : path.join(process.cwd(), defaultDirName);
 
   const locationLabel = isGlobal
-    ? claudeDir.replace(os.homedir(), '~')
-    : claudeDir.replace(process.cwd(), '.');
+    ? targetDir.replace(os.homedir(), '~')
+    : targetDir.replace(process.cwd(), '.');
 
   // Path prefix for file references
-  // Use actual path when CLAUDE_CONFIG_DIR is set, otherwise use ~ shorthand
+  // Use actual path when config dir is set, otherwise use ~ shorthand
   const pathPrefix = isGlobal
-    ? (configDir ? `${claudeDir}/` : '~/.claude/')
-    : './.claude/';
+    ? (configDir ? `${targetDir}/` : `~/${defaultDirName}/`)
+    : `./${defaultDirName}/`;
 
-  console.log(`  Installing to ${cyan}${locationLabel}${reset}\n`);
+  const platformName = isCursor ? 'Cursor' : 'Claude Code';
+  console.log(`  Installing to ${cyan}${locationLabel}${reset} (${platformName})\n`);
 
   // Create commands directory
-  const commandsDir = path.join(claudeDir, 'commands');
+  const commandsDir = path.join(targetDir, 'commands');
   fs.mkdirSync(commandsDir, { recursive: true });
 
   // Copy commands/gsd with path replacement
   const gsdSrc = path.join(src, 'commands', 'gsd');
   const gsdDest = path.join(commandsDir, 'gsd');
-  copyWithPathReplacement(gsdSrc, gsdDest, pathPrefix);
+  copyWithPathReplacement(gsdSrc, gsdDest, pathPrefix, isCursor);
   console.log(`  ${green}✓${reset} Installed commands/gsd`);
 
   // Copy get-shit-done skill with path replacement
   const skillSrc = path.join(src, 'get-shit-done');
-  const skillDest = path.join(claudeDir, 'get-shit-done');
-  copyWithPathReplacement(skillSrc, skillDest, pathPrefix);
+  const skillDest = path.join(targetDir, 'get-shit-done');
+  copyWithPathReplacement(skillSrc, skillDest, pathPrefix, isCursor);
   console.log(`  ${green}✓${reset} Installed get-shit-done`);
 
   console.log(`
-  ${green}Done!${reset} Launch Claude Code and run ${cyan}/gsd:help${reset}.
+  ${green}Done!${reset} Launch ${platformName} and run ${cyan}/gsd:help${reset}.
 `);
 }
 
@@ -177,14 +205,26 @@ function promptLocation() {
     output: process.stdout
   });
 
-  const configDir = expandTilde(explicitConfigDir) || expandTilde(process.env.CLAUDE_CONFIG_DIR);
-  const globalPath = configDir || path.join(os.homedir(), '.claude');
+  const isCursor = hasCursor;
+  const defaultDirName = isCursor ? '.cursor' : '.claude';
+  
+  let configDir;
+  if (explicitConfigDir) {
+    configDir = expandTilde(explicitConfigDir);
+  } else if (isCursor) {
+    configDir = expandTilde(process.env.CURSOR_CONFIG_DIR);
+  } else {
+    configDir = expandTilde(process.env.CLAUDE_CONFIG_DIR);
+  }
+  
+  const globalPath = configDir || path.join(os.homedir(), defaultDirName);
   const globalLabel = globalPath.replace(os.homedir(), '~');
+  const platformName = isCursor ? 'Cursor' : 'Claude Code';
 
-  console.log(`  ${yellow}Where would you like to install?${reset}
+  console.log(`  ${yellow}Where would you like to install?${reset} (${platformName})
 
   ${cyan}1${reset}) Global ${dim}(${globalLabel})${reset} - available in all projects
-  ${cyan}2${reset}) Local  ${dim}(./.claude)${reset} - this project only
+  ${cyan}2${reset}) Local  ${dim}(./${defaultDirName})${reset} - this project only
 `);
 
   rl.question(`  Choice ${dim}[1]${reset}: `, (answer) => {
