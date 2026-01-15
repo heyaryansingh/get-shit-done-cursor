@@ -28,10 +28,10 @@ Uses intelligent segmentation:
   </objective>
 
 <execution_context>
-@~/.claude/get-shit-done/workflows/execute-plan.md
-@~/.claude/get-shit-done/templates/summary.md
-@~/.claude/get-shit-done/references/checkpoints.md
-@~/.claude/get-shit-done/references/tdd.md
+@~/.cursor/get-shit-done/workflows/execute-plan.md
+@~/.cursor/get-shit-done/templates/summary.md
+@~/.cursor/get-shit-done/references/checkpoints.md
+@~/.cursor/get-shit-done/references/tdd.md
 </execution_context>
 
 <context>
@@ -114,7 +114,7 @@ After all tasks complete:
 
 **Always stage files individually.**
 
-See ~/.claude/get-shit-done/references/git-integration.md for full commit strategy.
+See ~/.cursor/get-shit-done/references/git-integration.md for full commit strategy.
 </commit_rules>
 
 <success_criteria>

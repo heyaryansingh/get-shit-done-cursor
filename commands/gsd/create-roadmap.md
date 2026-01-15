@@ -16,9 +16,9 @@ Roadmaps define what work happens in what order. Run after /gsd:new-project.
 </objective>
 
 <execution_context>
-@~/.claude/get-shit-done/workflows/create-roadmap.md
-@~/.claude/get-shit-done/templates/roadmap.md
-@~/.claude/get-shit-done/templates/state.md
+@~/.cursor/get-shit-done/workflows/create-roadmap.md
+@~/.cursor/get-shit-done/templates/roadmap.md
+@~/.cursor/get-shit-done/templates/state.md
 </execution_context>
 
 <context>
@@ -29,18 +29,18 @@ Roadmaps define what work happens in what order. Run after /gsd:new-project.
 <process>
 
 <step name="validate">
-```bash
-# Verify project exists
-[ -f .planning/PROJECT.md ] || { echo "ERROR: No PROJECT.md found. Run /gsd:new-project first."; exit 1; }
-```
+Use Read to check for `.planning/PROJECT.md`.
+
+- If missing, output: `ERROR: No PROJECT.md found. Run /gsd:new-project first.` and exit.
 </step>
 
 <step name="check_existing">
 Check if roadmap already exists:
 
-```bash
-[ -f .planning/ROADMAP.md ] && echo "ROADMAP_EXISTS" || echo "NO_ROADMAP"
-```
+Use Read to check for `.planning/ROADMAP.md`.
+
+- If it exists, set status to `ROADMAP_EXISTS`.
+- If it does not exist, set status to `NO_ROADMAP`.
 
 **If ROADMAP_EXISTS:**
 Use AskUserQuestion:
@@ -51,7 +51,7 @@ Use AskUserQuestion:
   - "Replace" - Create new roadmap (will overwrite)
   - "Cancel" - Keep existing roadmap
 
-If "View existing": `cat .planning/ROADMAP.md` and exit
+If "View existing": Read `.planning/ROADMAP.md` and exit
 If "Cancel": Exit
 If "Replace": Continue with workflow
 </step>

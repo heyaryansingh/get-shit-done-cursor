@@ -20,21 +20,20 @@ If starting new: gather symptoms, then investigate autonomously.
 </objective>
 
 <execution_context>
-@~/.claude/get-shit-done/workflows/debug.md
-@~/.claude/get-shit-done/templates/DEBUG.md
+@~/.cursor/get-shit-done/workflows/debug.md
+@~/.cursor/get-shit-done/templates/DEBUG.md
 </execution_context>
 
 <context>
 User's issue: $ARGUMENTS
 
 Check for active debug sessions:
-```bash
-ls .planning/debug/*.md 2>/dev/null | head -5
-```
+- Use Glob to list `.planning/debug/*.md`.
+- If any exist, show up to 5 results.
 </context>
 
 <process>
-Follow the workflow in @~/.claude/get-shit-done/workflows/debug.md
+Follow the workflow in @~/.cursor/get-shit-done/workflows/debug.md
 
 **Quick reference:**
 

@@ -19,8 +19,8 @@ Output: {plan}-FIX.md in the phase directory, ready for execution.
 </objective>
 
 <execution_context>
-@~/.claude/get-shit-done/references/plan-format.md
-@~/.claude/get-shit-done/references/checkpoints.md
+@~/.cursor/get-shit-done/references/plan-format.md
+@~/.cursor/get-shit-done/references/checkpoints.md
 </execution_context>
 
 <context>
@@ -54,9 +54,9 @@ Exit.
 **Find ISSUES.md file:**
 
 Search for matching ISSUES.md:
-```bash
-ls .planning/phases/*/{plan}-ISSUES.md 2>/dev/null
-```
+Use Glob to search for `.planning/phases/*/{plan}-ISSUES.md`.
+
+- If multiple matches, choose the one that matches the parsed phase number.
 
 If not found:
 ```
@@ -126,8 +126,8 @@ Priority: {critical count} critical, {major count} major, {minor count} minor
 </objective>
 
 <execution_context>
-@~/.claude/get-shit-done/workflows/execute-plan.md
-@~/.claude/get-shit-done/templates/summary.md
+@~/.cursor/get-shit-done/workflows/execute-plan.md
+@~/.cursor/get-shit-done/templates/summary.md
 </execution_context>
 
 <context>

@@ -11,7 +11,7 @@ Output: Context gathered, then routes to /gsd:new-milestone
 </objective>
 
 <execution_context>
-@~/.claude/get-shit-done/workflows/discuss-milestone.md
+@~/.cursor/get-shit-done/workflows/discuss-milestone.md
 </execution_context>
 
 <context>

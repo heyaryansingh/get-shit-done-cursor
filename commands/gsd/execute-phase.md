@@ -30,11 +30,11 @@ Use this command when:
 </objective>
 
 <execution_context>
-@~/.claude/get-shit-done/workflows/execute-plan.md
-@~/.claude/get-shit-done/workflows/execute-phase.md
-@~/.claude/get-shit-done/templates/summary.md
-@~/.claude/get-shit-done/references/checkpoints.md
-@~/.claude/get-shit-done/references/tdd.md
+@~/.cursor/get-shit-done/workflows/execute-plan.md
+@~/.cursor/get-shit-done/workflows/execute-phase.md
+@~/.cursor/get-shit-done/templates/summary.md
+@~/.cursor/get-shit-done/references/checkpoints.md
+@~/.cursor/get-shit-done/references/tdd.md
 </execution_context>
 
 <context>

@@ -20,7 +20,7 @@ Uses the agent ID tracking infrastructure from execute-plan to identify and resu
 </objective>
 
 <execution_context>
-@~/.claude/get-shit-done/workflows/resume-task.md
+@~/.cursor/get-shit-done/workflows/resume-task.md
 </execution_context>
 
 <context>

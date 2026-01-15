@@ -3,6 +3,7 @@ name: gsd:new-project
 description: Initialize a new project with deep context gathering and PROJECT.md
 allowed-tools:
   - Read
+  - Glob
   - Bash
   - Write
   - AskUserQuestion
@@ -20,10 +21,10 @@ Creates `.planning/` with PROJECT.md and config.json.
 
 <execution_context>
 
-@~/.claude/get-shit-done/references/principles.md
-@~/.claude/get-shit-done/references/questioning.md
-@~/.claude/get-shit-done/templates/project.md
-@~/.claude/get-shit-done/templates/config.json
+@~/.cursor/get-shit-done/references/principles.md
+@~/.cursor/get-shit-done/references/questioning.md
+@~/.cursor/get-shit-done/templates/project.md
+@~/.cursor/get-shit-done/templates/config.json
 
 </execution_context>
 
@@ -34,30 +35,24 @@ Creates `.planning/` with PROJECT.md and config.json.
 **MANDATORY FIRST STEP — Execute these checks before ANY user interaction:**
 
 1. **Abort if project exists:**
-   ```bash
-   [ -f .planning/PROJECT.md ] && echo "ERROR: Project already initialized. Use /gsd:progress" && exit 1
-   ```
+   - Use Read to check for `.planning/PROJECT.md`.
+   - If it exists, output: `ERROR: Project already initialized. Use /gsd:progress` and exit.
 
 2. **Initialize git repo in THIS directory** (required even if inside a parent repo):
-   ```bash
-   # Check if THIS directory is already a git repo root (handles .git file for worktrees too)
-   if [ -d .git ] || [ -f .git ]; then
-       echo "Git repo exists in current directory"
-   else
-       git init
-       echo "Initialized new git repo"
-   fi
-   ```
+   - Use Glob to check for a `.git` directory or `.git` file in the current directory (worktrees use a file).
+   - If neither exists, run `git init` in the current directory.
 
 3. **Detect existing code (brownfield detection):**
-   ```bash
-   # Check for existing code files
-   CODE_FILES=$(find . -name "*.ts" -o -name "*.js" -o -name "*.py" -o -name "*.go" -o -name "*.rs" -o -name "*.swift" -o -name "*.java" 2>/dev/null | grep -v node_modules | grep -v .git | head -20)
-   HAS_PACKAGE=$([ -f package.json ] || [ -f requirements.txt ] || [ -f Cargo.toml ] || [ -f go.mod ] || [ -f Package.swift ] && echo "yes")
-   HAS_CODEBASE_MAP=$([ -d .planning/codebase ] && echo "yes")
-   ```
+   - Use Glob to collect up to 20 files with extensions: `.ts`, `.js`, `.py`, `.go`, `.rs`, `.swift`, `.java`.
+   - Ignore matches under `node_modules/` or `.git/`.
+   - Use Read to check for package manifests: `package.json`, `requirements.txt`, `Cargo.toml`, `go.mod`, `Package.swift`.
+   - Use Glob to check whether `.planning/codebase/` exists (any files under it).
+   - Record:
+     - `CODE_FILES` = list of matching files (up to 20)
+     - `HAS_PACKAGE` = "yes" if any manifest exists
+     - `HAS_CODEBASE_MAP` = "yes" if `.planning/codebase/` exists
 
-   **You MUST run all bash commands above using the Bash tool before proceeding.**
+   **You MUST complete the checks above using Read/Glob tools before proceeding.**
 
 </step>
 
@@ -274,23 +269,20 @@ Create `.planning/config.json` with chosen mode, depth, and parallelization usin
 
 <step name="commit">
 
-```bash
-git add .planning/PROJECT.md .planning/config.json
-git commit -m "$(cat <<'EOF'
-docs: initialize [project-name]
+Stage `.planning/PROJECT.md` and `.planning/config.json`, then create a commit with:
 
-[One-liner from PROJECT.md]
+- Title: `docs: initialize [project-name]`
+- Body line 1: `[One-liner from PROJECT.md]`
+- Body line 2: *(blank line)*
+- Body line 3: `Creates PROJECT.md with requirements and constraints.`
 
-Creates PROJECT.md with requirements and constraints.
-EOF
-)"
-```
+Use a cross-platform git command (no bash heredoc). For example, pass multiple `-m` flags or write the message to a temp file and use `git commit -F`.
 
 </step>
 
 <step name="done">
 
-Present completion with next steps (see ~/.claude/get-shit-done/references/continuation-format.md):
+Present completion with next steps (see ~/.cursor/get-shit-done/references/continuation-format.md):
 
 ```
 Project initialized:
