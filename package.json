@@ -1,6 +1,6 @@
 {
   "name": "get-shit-done-cursor",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A meta-prompting, context engineering and spec-driven development system for Cursor IDE. Forked from get-shit-done-cc with Cursor support.",
   "bin": {
     "get-shit-done-cursor": "bin/install.js",
