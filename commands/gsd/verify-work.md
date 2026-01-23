@@ -1,5 +1,5 @@
 ---
-name: gsd/verify-work
+name: gsd:verify-work
 description: Guide manual user acceptance testing of recently built features
 argument-hint: "[optional: phase or plan number, e.g., '4' or '04-02']"
 allowed-tools:
@@ -49,7 +49,7 @@ Scope: $ARGUMENTS (optional)
    - Present summary with verdict
 4. Offer next steps based on results:
    - If all passed: Continue to next phase
-   - If issues found: `/gsd/plan-fix {phase} {plan}` to create fix plan
+   - If issues found: `/gsd:plan-fix {phase} {plan}` to create fix plan
 </process>
 
 <anti_patterns>

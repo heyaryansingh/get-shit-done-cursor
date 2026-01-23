@@ -293,7 +293,7 @@ mkdir -p .planning/phases
 Use template from `~/.claude/get-shit-done/templates/roadmap.md`.
 
 Initial roadmaps use integer phases (1, 2, 3...).
-Decimal phases added later via /gsd/insert-phase command (if it exists).
+Decimal phases added later via /gsd:insert-phase command (if it exists).
 
 Write to `.planning/ROADMAP.md` with:
 
@@ -430,15 +430,15 @@ Project initialized:
 
 **Phase 1: [Name]** — [Goal from ROADMAP.md]
 
-`/gsd/plan-phase 1`
+`/gsd:plan-phase 1`
 
 <sub>`/clear` first → fresh context window</sub>
 
 ---
 
 **Also available:**
-- `/gsd/discuss-phase 1` — gather context first
-- `/gsd/research-phase 1` — investigate unknowns
+- `/gsd:discuss-phase 1` — gather context first
+- `/gsd:research-phase 1` — investigate unknowns
 - Review roadmap
 
 ---

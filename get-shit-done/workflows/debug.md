@@ -281,7 +281,7 @@ If ELIMINATED:
 
 After significant investigation (5+ evidence entries), check if context is heavy.
 If so, ensure Current Focus is fully updated and suggest:
-"Context filling up. Safe to /clear - run /gsd/debug to resume."
+"Context filling up. Safe to /clear - run /gsd:debug to resume."
 </step>
 
 <step name="resume_from_file">
@@ -391,7 +391,7 @@ Use AskUserQuestion:
 - header: "Next"
 - question: "What now?"
 - options:
-  - "Continue working" - Back to /gsd/progress
+  - "Continue working" - Back to /gsd:progress
   - "Test more" - Verify related functionality
   - "Done" - End session
 </step>

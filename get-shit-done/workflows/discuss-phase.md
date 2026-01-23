@@ -42,7 +42,7 @@ fi
 ```
 Error: Phase ${PHASE} not found in roadmap.
 
-Use /gsd/progress to see available phases.
+Use /gsd:progress to see available phases.
 ```
 
 Exit workflow.
@@ -200,14 +200,14 @@ Created: .planning/phases/${PHASE}-${SLUG}/${PHASE}-CONTEXT.md
 
 **Phase ${PHASE}: [Name]** — [Goal from ROADMAP.md]
 
-`/gsd/plan-phase ${PHASE}`
+`/gsd:plan-phase ${PHASE}`
 
 <sub>`/clear` first → fresh context window</sub>
 
 ---
 
 **Also available:**
-- `/gsd/research-phase ${PHASE}` — investigate unknowns
+- `/gsd:research-phase ${PHASE}` — investigate unknowns
 - Review/edit CONTEXT.md before continuing
 
 ---

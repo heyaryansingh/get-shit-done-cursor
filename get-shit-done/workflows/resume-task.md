@@ -1,6 +1,6 @@
 <trigger>
 Use this workflow when:
-- User runs /gsd/resume-task
+- User runs /gsd:resume-task
 - Need to continue interrupted subagent execution
 - Resuming work after session ended mid-plan
 </trigger>
@@ -43,7 +43,7 @@ There's no interrupted agent recorded. This could mean:
 - The last agent completed successfully
 - .planning/current-agent-id.txt was cleared
 
-Use /gsd/progress to check project status.
+Use /gsd:progress to check project status.
 ```
 
 **If agent ID found:** Continue to validate_agent step.
@@ -132,7 +132,7 @@ Wait for user response.
 
 **If user selects "Abort":**
 ```
-Resume aborted. Review your changes and run /gsd/resume-task when ready.
+Resume aborted. Review your changes and run /gsd:resume-task when ready.
 ```
 End workflow.
 
@@ -242,7 +242,7 @@ Options:
 1. Start fresh - Execute plan from beginning
 2. Check status - Review what was completed
 
-Run /gsd/execute-plan to start fresh if needed.
+Run /gsd:execute-plan to start fresh if needed.
 ```
 
 Do NOT clear current-agent-id.txt on error - allow retry.

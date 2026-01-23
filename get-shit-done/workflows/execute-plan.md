@@ -1530,18 +1530,18 @@ Use AskUserQuestion:
 - header: "Phase Issues"
 - question: "[N] issues were logged during this phase. Review now?"
 - options:
-  - "Review issues" - Analyze with /gsd/consider-issues
+  - "Review issues" - Analyze with /gsd:consider-issues
   - "Continue" - Address later, proceed to next work
 
 **If "Review issues" selected:**
-- Invoke: `SlashCommand("/gsd/consider-issues")`
+- Invoke: `SlashCommand("/gsd:consider-issues")`
 - After consider-issues completes, return to offer_next
 
 **If "Continue" selected or no issues found:**
 - Proceed to offer_next step
 
 **In YOLO mode:**
-- Note issues were logged but don't prompt: `📋 [N] issues logged this phase (review later with /gsd/consider-issues)`
+- Note issues were logged but don't prompt: `📋 [N] issues logged this phase (review later with /gsd:consider-issues)`
 - Continue to offer_next automatically
 </step>
 
@@ -1604,14 +1604,14 @@ Summary: .planning/phases/{phase-dir}/{phase}-{plan}-SUMMARY.md
 
 **{phase}-{next-plan}: [Plan Name]** — [objective from next PLAN.md]
 
-`/gsd/execute-plan .planning/phases/{phase-dir}/{phase}-{next-plan}-PLAN.md`
+`/gsd:execute-plan .planning/phases/{phase-dir}/{phase}-{next-plan}-PLAN.md`
 
 <sub>`/clear` first → fresh context window</sub>
 
 ---
 
 **Also available:**
-- `/gsd/verify-work {phase}-{plan}` — manual acceptance testing before continuing
+- `/gsd:verify-work {phase}-{plan}` — manual acceptance testing before continuing
 - Review what was built before continuing
 
 ---
@@ -1665,16 +1665,16 @@ All {Y} plans finished.
 
 **Phase {Z+1}: {Next Phase Name}** — {Goal from ROADMAP.md}
 
-`/gsd/plan-phase {Z+1}`
+`/gsd:plan-phase {Z+1}`
 
 <sub>`/clear` first → fresh context window</sub>
 
 ---
 
 **Also available:**
-- `/gsd/verify-work {Z}` — manual acceptance testing before continuing
-- `/gsd/discuss-phase {Z+1}` — gather context first
-- `/gsd/research-phase {Z+1}` — investigate unknowns
+- `/gsd:verify-work {Z}` — manual acceptance testing before continuing
+- `/gsd:discuss-phase {Z+1}` — gather context first
+- `/gsd:research-phase {Z+1}` — investigate unknowns
 - Review phase accomplishments before continuing
 
 ---
@@ -1705,15 +1705,15 @@ Milestone is 100% done.
 
 **Complete Milestone** — archive and prepare for next
 
-`/gsd/complete-milestone`
+`/gsd:complete-milestone`
 
 <sub>`/clear` first → fresh context window</sub>
 
 ---
 
 **Also available:**
-- `/gsd/verify-work` — manual acceptance testing before completing milestone
-- `/gsd/add-phase <description>` — add another phase before completing
+- `/gsd:verify-work` — manual acceptance testing before completing milestone
+- `/gsd:add-phase <description>` — add another phase before completing
 - Review accomplishments before archiving
 
 ---

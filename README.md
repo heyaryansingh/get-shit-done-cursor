@@ -1,10 +1,10 @@
 <div align="center">
 
-# GET SHIT DONE (Cursor Edition)
+# GET SHIT DONE (Cursor+ Edition)
 
-**A light-weight and powerful meta-prompting, context engineering and spec-driven development system optimized for Cursor IDE.**
+**A light-weight and powerful meta-prompting, context engineering and spec-driven development system for Claude Code, Cursor IDE, and OpenCode.**
 
-> **Note:** This is a Cursor-focused fork of [get-shit-done](https://github.com/glittercowboy/get-shit-done) by TÂCHES, adapted with full Cursor IDE support.
+> **Multi-Platform Support:** Works with Claude Code (colon syntax: `/gsd:help`), Cursor IDE (slash syntax: `/gsd/help`), and OpenCode.
 
 [![npm version](https://img.shields.io/npm/v/get-shit-done-cursor?style=for-the-badge&logo=npm&logoColor=white&color=CB3837)](https://www.npmjs.com/package/get-shit-done-cursor)
 [![npm downloads](https://img.shields.io/npm/dm/get-shit-done-cursor?style=for-the-badge&logo=npm&logoColor=white&color=CB3837)](https://www.npmjs.com/package/get-shit-done-cursor)
@@ -13,13 +13,17 @@
 
 <br>
 
+**For Cursor IDE:**
 ```bash
 npx get-shit-done-cursor --cursor --local
 ```
 
-**Works on Mac, Windows, and Linux.**
+**For Claude Code:**
+```bash
+npx get-shit-done-cursor --local
+```
 
-**✨ Now fully supported for Cursor IDE!**
+**Works on Mac, Windows, and Linux.**
 
 <br>
 
@@ -40,6 +44,20 @@ npx get-shit-done-cursor --cursor --local
 [Why I Built This](#why-i-built-this) · [How It Works](#how-it-works) · [Commands](#commands) · [Why It Works](#why-it-works)
 
 </div>
+
+---
+
+## Platform Command Syntax
+
+GSD supports multiple AI coding platforms with platform-specific command syntax:
+
+| Platform | Command Syntax | Example | Install Flag |
+|----------|---------------|---------|--------------|
+| **Claude Code** | Colon (`:`) | `/gsd:help`, `/gsd:plan-phase 1` | *(none)* |
+| **Cursor IDE** | Slash (`/`) | `/gsd/help`, `/gsd/plan-phase 1` | `--cursor` |
+| **OpenCode** | Colon (`:`) | `/gsd:help`, `/gsd:plan-phase 1` | *(none)* |
+
+> **Note:** The install script automatically converts commands to the correct syntax for your platform.
 
 ---
 
@@ -70,6 +88,7 @@ GSD fixes that. It's the context engineering layer that makes AI-powered develop
 People who want to describe what they want and have it built correctly — without pretending they're running a 50-person engineering org.
 
 **Perfect for:**
+- Claude Code users wanting structured, reliable AI-assisted development
 - Cursor users who want structured, reliable AI-assisted development
 - Solo developers building MVPs and side projects
 - Teams using AI coding assistants who need better context management
@@ -79,7 +98,7 @@ People who want to describe what they want and have it built correctly — witho
 
 ## Getting Started
 
-### Quick Install for Cursor
+### Quick Install for Cursor IDE
 
 **Install in any Cursor project:**
 ```bash
@@ -103,27 +122,31 @@ npx get-shit-done-cursor --cursor --global
 
 This installs to `~/.cursor/` and makes GSD available in all your Cursor projects without reinstalling.
 
-**Alternative: Install from GitHub:**
-```bash
-npx github:heyaryansingh/get-shit-done-cursor --cursor --local
-```
-
 ### Quick Install for Claude Code
 
-> **Note:** For Claude Code, use the original package: `npx get-shit-done-cc`
+**Install in any Claude Code project:**
+```bash
+npx get-shit-done-cursor --local
+```
 
-This Cursor edition focuses on Cursor IDE. For Claude Code support, please use the [original repository](https://github.com/glittercowboy/get-shit-done).
+Or for global installation:
+```bash
+npx get-shit-done-cursor --global
+```
 
-That's it. Verify with `/gsd/help` inside your Cursor or Claude Code interface.
+**After installation:**
+1. Start Claude Code
+2. Type `/gsd:help` to verify it's working
+
+> **Note:** Claude Code uses colon syntax (`:`) while Cursor uses slash syntax (`/`). The installer handles this automatically.
 
 <details>
 <summary><strong>Non-interactive Install (Docker, CI, Scripts)</strong></summary>
 
 **Claude Code:**
 ```bash
-# Use original package for Claude Code
-npx get-shit-done-cc --global   # Install to ~/.claude/
-npx get-shit-done-cc --local    # Install to ./.claude/
+npx get-shit-done-cursor --global   # Install to ~/.claude/
+npx get-shit-done-cursor --local    # Install to ./.claude/
 ```
 
 **Cursor IDE:**
@@ -142,8 +165,8 @@ Use `--global` (`-g`) or `--local` (`-l`) to skip the interactive prompt.
 Clone the repository and run the installer locally:
 
 ```bash
-git clone https://github.com/glittercowboy/get-shit-done.git
-cd get-shit-done
+git clone https://github.com/heyaryansingh/get-shit-done-cursor.git
+cd get-shit-done-cursor
 node bin/install.js --local
 ```
 
@@ -154,6 +177,8 @@ Installs to `./.claude/` for testing modifications before contributing.
 ### Cursor Setup
 
 **No additional configuration needed!** Cursor has permissive defaults that work well with GSD out of the box.
+
+Cursor now supports **Agent Skills** and **subagents**, which GSD leverages for parallel plan execution via `/gsd/execute-phase`.
 
 If you encounter permission prompts, you can configure them in your project's `.cursor/settings.json`:
 
@@ -230,24 +255,24 @@ If you prefer not to use that flag, add this to your project's `.claude/settings
 
 ## How It Works
 
-GSD works seamlessly in Cursor. Install once per project, then use slash commands in the Cursor chat.
+GSD works seamlessly in both Cursor and Claude Code. Install once per project, then use slash commands in the chat interface.
 
 ### Quick Start Workflow
 
+> **Note:** Examples below show Claude Code syntax (`/gsd:`). For Cursor, replace with `/gsd/`.
+
 **1. Start with an idea**
 
-In Cursor chat, type:
 ```
-/gsd/new-project
+/gsd:new-project
 ```
 
 The system asks questions about your goals, constraints, tech preferences, and edge cases. Keeps asking until everything is captured. Creates **PROJECT.md** in `.planning/`.
 
 **2. Create roadmap**
 
-In Cursor chat:
 ```
-/gsd/create-roadmap
+/gsd:create-roadmap
 ```
 
 Produces:
@@ -257,32 +282,32 @@ Produces:
 **3. Plan and execute phases**
 
 ```
-/gsd/plan-phase 1      # System creates atomic task plans
-/gsd/execute-plan .planning/phases/01-foundation/01-01-PLAN.md
+/gsd:plan-phase 1      # System creates atomic task plans
+/gsd:execute-plan .planning/phases/01-foundation/01-01-PLAN.md
 ```
 
 Each phase breaks into 2-3 atomic tasks. Each task runs in a fresh context — 200k tokens purely for implementation, zero degradation.
 
 **For multi-plan phases:**
 ```
-/gsd/execute-phase 1   # Run all plans in parallel, "walk away" execution
+/gsd:execute-phase 1   # Run all plans in parallel, "walk away" execution
 ```
 
-Use `/gsd/execute-plan` for interactive single-plan execution with checkpoints. Use `/gsd/execute-phase` when you have multiple plans and want parallel "walk away" automation.
+Use `/gsd:execute-plan` for interactive single-plan execution with checkpoints. Use `/gsd:execute-phase` when you have multiple plans and want parallel "walk away" automation.
 
 **4. Ship and iterate**
 
 ```
-/gsd/complete-milestone   # Archive v1, prep for v2
-/gsd/add-phase            # Append new work
-/gsd/insert-phase 2       # Slip urgent work between phases
+/gsd:complete-milestone   # Archive v1, prep for v2
+/gsd:add-phase            # Append new work
+/gsd:insert-phase 2       # Slip urgent work between phases
 ```
 
 Ship your MVP in a day. Add features. Insert hotfixes. The system stays modular — you're never stuck.
 
 ---
 
-## Using GSD in Your Cursor Projects
+## Using GSD in Your Projects
 
 ### For New Projects
 
@@ -293,17 +318,27 @@ Ship your MVP in a day. Add features. Insert hotfixes. The system stays modular 
    ```
 
 2. **Install GSD:**
+   
+   **For Cursor:**
    ```bash
    npx get-shit-done-cursor --cursor --local
    ```
+   
+   **For Claude Code:**
+   ```bash
+   npx get-shit-done-cursor --local
+   ```
 
-3. **Restart Cursor** and open your project
+3. **Restart your IDE** (Cursor only) and open your project
 
 4. **Start using GSD commands:**
-   - `/gsd/new-project` - Initialize your project
-   - `/gsd/create-roadmap` - Create your development roadmap
-   - `/gsd/plan-phase 1` - Plan the first phase
-   - `/gsd/execute-plan` - Execute your plans
+   
+   | Claude Code | Cursor | Description |
+   |-------------|--------|-------------|
+   | `/gsd:new-project` | `/gsd/new-project` | Initialize your project |
+   | `/gsd:create-roadmap` | `/gsd/create-roadmap` | Create your development roadmap |
+   | `/gsd:plan-phase 1` | `/gsd/plan-phase 1` | Plan the first phase |
+   | `/gsd:execute-plan` | `/gsd/execute-plan` | Execute your plans |
 
 ### For Existing Projects
 
@@ -313,17 +348,24 @@ Ship your MVP in a day. Add features. Insert hotfixes. The system stays modular 
    ```
 
 2. **Install GSD:**
+   
+   **For Cursor:**
    ```bash
    npx get-shit-done-cursor --cursor --local
    ```
+   
+   **For Claude Code:**
+   ```bash
+   npx get-shit-done-cursor --local
+   ```
 
-3. **Restart Cursor** and open your project
+3. **Restart your IDE** (Cursor only) and open your project
 
 4. **Map your existing codebase:**
-   In Cursor chat, type:
-   ```
-   /gsd/map-codebase
-   ```
+   
+   **Claude Code:** `/gsd:map-codebase`
+   
+   **Cursor:** `/gsd/map-codebase`
    
    This analyzes your codebase and creates `.planning/codebase/` with 7 documents:
    
@@ -338,16 +380,14 @@ Ship your MVP in a day. Add features. Insert hotfixes. The system stays modular 
    | `CONCERNS.md` | Tech debt, known issues, fragile areas |
 
 5. **Initialize project:**
-   ```
-   /gsd/new-project
-   ```
+   
+   **Claude Code:** `/gsd:new-project`
+   
+   **Cursor:** `/gsd/new-project`
    
    The system now knows your codebase. Questions focus on what you're adding/changing.
 
 6. **Continue as normal:**
-   - `/gsd/create-roadmap` - Create roadmap
-   - `/gsd/plan-phase 1` - Plan phases
-   - `/gsd/execute-plan` - Execute plans
    
    The codebase docs load automatically during planning. The AI knows your patterns, conventions, and where to put things.
 
@@ -407,6 +447,8 @@ GSD prevents this. Each plan is maximum 3 tasks. Each plan runs in a fresh conte
 
 No degradation. Walk away, come back to completed work.
 
+**Cursor Subagent Support:** Cursor now supports Agent Skills and subagents. GSD leverages this for parallel plan execution - when you run `/gsd/execute-phase`, multiple plans can run concurrently using Cursor's native subagent system.
+
 ### Atomic Git Commits
 
 Each task gets its own commit immediately after completion:
@@ -436,35 +478,37 @@ You're never locked in. The system adapts.
 
 ## Commands
 
+> **Syntax:** Commands shown use Claude Code syntax (`/gsd:`). For Cursor, replace with `/gsd/`.
+
 | Command | What it does |
 |---------|--------------|
-| `/gsd/new-project` | Extract your idea through questions, create PROJECT.md |
-| `/gsd/create-roadmap` | Create roadmap and state tracking |
-| `/gsd/map-codebase` | Map existing codebase for brownfield projects |
-| `/gsd/plan-phase [N]` | Generate task plans for phase |
-| `/gsd/execute-plan` | Run single plan via subagent |
-| `/gsd/execute-phase <N>` | Execute all plans in phase N with parallel agents |
-| `/gsd/status [--wait]` | Check background agent status from parallel execution |
-| `/gsd/progress` | Where am I? What's next? |
-| `/gsd/verify-work [N]` | User acceptance test of phase or plan ¹ |
-| `/gsd/plan-fix [plan]` | Plan fixes for UAT issues from verify-work |
-| `/gsd/complete-milestone` | Ship it, prep next version |
-| `/gsd/discuss-milestone` | Gather context for next milestone |
-| `/gsd/new-milestone [name]` | Create new milestone with phases |
-| `/gsd/add-phase` | Append phase to roadmap |
-| `/gsd/insert-phase [N]` | Insert urgent work |
-| `/gsd/remove-phase [N]` | Remove future phase, renumber subsequent |
-| `/gsd/discuss-phase [N]` | Gather context before planning |
-| `/gsd/research-phase [N]` | Deep ecosystem research for niche domains |
-| `/gsd/list-phase-assumptions [N]` | See what Claude thinks before you correct it |
-| `/gsd/pause-work` | Create handoff file when stopping mid-phase |
-| `/gsd/resume-work` | Restore from last session |
-| `/gsd/resume-task [id]` | Resume interrupted subagent execution |
-| `/gsd/consider-issues` | Review deferred issues, close resolved, identify urgent |
-| `/gsd/add-todo [desc]` | Capture idea or task from conversation for later |
-| `/gsd/check-todos [area]` | List pending todos, select one to work on |
-| `/gsd/debug [desc]` | Systematic debugging with persistent state across `/clear` |
-| `/gsd/help` | Show all commands and usage guide |
+| `/gsd:new-project` | Extract your idea through questions, create PROJECT.md |
+| `/gsd:create-roadmap` | Create roadmap and state tracking |
+| `/gsd:map-codebase` | Map existing codebase for brownfield projects |
+| `/gsd:plan-phase [N]` | Generate task plans for phase |
+| `/gsd:execute-plan` | Run single plan via subagent |
+| `/gsd:execute-phase <N>` | Execute all plans in phase N with parallel agents |
+| `/gsd:status [--wait]` | Check background agent status from parallel execution |
+| `/gsd:progress` | Where am I? What's next? |
+| `/gsd:verify-work [N]` | User acceptance test of phase or plan ¹ |
+| `/gsd:plan-fix [plan]` | Plan fixes for UAT issues from verify-work |
+| `/gsd:complete-milestone` | Ship it, prep next version |
+| `/gsd:discuss-milestone` | Gather context for next milestone |
+| `/gsd:new-milestone [name]` | Create new milestone with phases |
+| `/gsd:add-phase` | Append phase to roadmap |
+| `/gsd:insert-phase [N]` | Insert urgent work |
+| `/gsd:remove-phase [N]` | Remove future phase, renumber subsequent |
+| `/gsd:discuss-phase [N]` | Gather context before planning |
+| `/gsd:research-phase [N]` | Deep ecosystem research for niche domains |
+| `/gsd:list-phase-assumptions [N]` | See what Claude thinks before you correct it |
+| `/gsd:pause-work` | Create handoff file when stopping mid-phase |
+| `/gsd:resume-work` | Restore from last session |
+| `/gsd:resume-task [id]` | Resume interrupted subagent execution |
+| `/gsd:consider-issues` | Review deferred issues, close resolved, identify urgent |
+| `/gsd:add-todo [desc]` | Capture idea or task from conversation for later |
+| `/gsd:check-todos [area]` | List pending todos, select one to work on |
+| `/gsd:debug [desc]` | Systematic debugging with persistent state across context resets |
+| `/gsd:help` | Show all commands and usage guide |
 
 <sup>¹ Contributed by reddit user OracleGreyBeard</sup>
 
@@ -473,17 +517,23 @@ You're never locked in. The system adapts.
 ## Troubleshooting
 
 **Commands not found after install?**
-- **Restart Cursor** - This is required! Close and reopen Cursor after installation
-- Verify files exist: `./.cursor/commands/gsd/` (local) or `~/.cursor/commands/gsd/` (global)
+- **Restart Cursor** (Cursor only) - This is required! Close and reopen Cursor after installation
+- **Claude Code:** Verify files exist in `~/.claude/commands/gsd/` (global) or `./.claude/commands/gsd/` (local)
+- **Cursor:** Verify files exist in `~/.cursor/commands/gsd/` (global) or `./.cursor/commands/gsd/` (local)
 - Make sure you're in the project directory where you ran the install command
 
 **Commands not working as expected?**
-- Run `/gsd/help` to verify installation
-- Re-run `npx get-shit-done-cursor --cursor --local` to reinstall
+- **Claude Code:** Run `/gsd:help` to verify installation
+- **Cursor:** Run `/gsd/help` to verify installation
+- Re-run the install command for your platform
 
 **Updating to the latest version?**
 ```bash
+# For Cursor
 npx get-shit-done-cursor@latest --cursor --local
+
+# For Claude Code
+npx get-shit-done-cursor@latest --local
 ```
 
 **Using Docker or containerized environments?**
@@ -492,8 +542,7 @@ If file reads fail with tilde paths, set the appropriate config directory before
 
 **Claude Code:**
 ```bash
-# Use original package for Claude Code
-CLAUDE_CONFIG_DIR=/home/youruser/.claude npx get-shit-done-cc --global
+CLAUDE_CONFIG_DIR=/home/youruser/.claude npx get-shit-done-cursor --global
 ```
 
 **Cursor:**
@@ -525,7 +574,7 @@ MIT License. See [LICENSE](LICENSE) for details.
 
 <div align="center">
 
-**Cursor is powerful. GSD makes it reliable.**
+**Claude Code and Cursor are powerful. GSD makes them reliable.**
 
 </div>
 
@@ -533,6 +582,6 @@ MIT License. See [LICENSE](LICENSE) for details.
 
 ## Credits
 
-This is a Cursor-focused fork of [get-shit-done](https://github.com/glittercowboy/get-shit-done) by [TÂCHES](https://github.com/glittercowboy). 
+This is based on [get-shit-done](https://github.com/glittercowboy/get-shit-done) by [TÂCHES](https://github.com/glittercowboy). 
 
-Original work by TÂCHES. Cursor adaptation and enhancements by [heyaryansingh](https://github.com/heyaryansingh).
+Original work by TÂCHES. Multi-platform support and enhancements by [heyaryansingh](https://github.com/heyaryansingh).

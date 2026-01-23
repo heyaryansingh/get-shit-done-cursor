@@ -60,34 +60,38 @@ console.log(banner);
 
 // Show help if requested
 if (hasHelp) {
-  console.log(`  ${yellow}Usage:${reset} npx get-shit-done-cc [options]
+  console.log(`  ${yellow}Usage:${reset} npx get-shit-done-cursor [options]
 
   ${yellow}Options:${reset}
     ${cyan}-g, --global${reset}              Install globally (to config directory)
     ${cyan}-l, --local${reset}               Install locally (to ./.claude or ./.cursor)
-    ${cyan}--cursor${reset}                   Install for Cursor IDE (default: Claude Code)
+    ${cyan}--cursor${reset}                  Install for Cursor IDE (default: Claude Code)
     ${cyan}-c, --config-dir <path>${reset}   Specify custom config directory
     ${cyan}-h, --help${reset}                Show this help message
 
+  ${yellow}Platform Differences:${reset}
+    ${cyan}Claude Code${reset}  Uses colon syntax: /gsd:help, /gsd:plan-phase
+    ${cyan}Cursor IDE${reset}   Uses slash syntax: /gsd/help, /gsd/plan-phase
+
   ${yellow}Examples:${reset}
     ${dim}# Install to default ~/.claude directory (Claude Code)${reset}
-    npx get-shit-done-cc --global
+    npx get-shit-done-cursor --global
 
     ${dim}# Install to ~/.cursor directory (Cursor IDE)${reset}
-    npx get-shit-done-cc --cursor --global
+    npx get-shit-done-cursor --cursor --global
 
     ${dim}# Install to custom config directory${reset}
-    npx get-shit-done-cc --global --config-dir ~/.claude-bc
+    npx get-shit-done-cursor --global --config-dir ~/.claude-bc
 
     ${dim}# Using environment variable (Claude Code)${reset}
-    CLAUDE_CONFIG_DIR=~/.claude-bc npx get-shit-done-cc --global
+    CLAUDE_CONFIG_DIR=~/.claude-bc npx get-shit-done-cursor --global
 
     ${dim}# Using environment variable (Cursor)${reset}
-    CURSOR_CONFIG_DIR=~/.cursor-custom npx get-shit-done-cc --cursor --global
+    CURSOR_CONFIG_DIR=~/.cursor-custom npx get-shit-done-cursor --cursor --global
 
     ${dim}# Install to current project only${reset}
-    npx get-shit-done-cc --local
-    npx get-shit-done-cc --cursor --local
+    npx get-shit-done-cursor --local
+    npx get-shit-done-cursor --cursor --local
 
   ${yellow}Notes:${reset}
     The --config-dir option takes priority over environment variables.
@@ -107,6 +111,39 @@ function expandTilde(filePath) {
 }
 
 /**
+ * Transform content for Cursor IDE
+ * - Convert command syntax from gsd: to gsd/
+ * - Convert /clear to "start a new chat" instructions
+ */
+function transformForCursor(content) {
+  // Convert name: field in frontmatter (gsd:command -> gsd/command)
+  content = content.replace(/^(name:\s*)gsd:/gm, '$1gsd/');
+  
+  // Convert documentation references (/gsd:command -> /gsd/command)
+  content = content.replace(/\/gsd:/g, '/gsd/');
+  
+  // Convert /clear command references to Cursor-friendly instructions
+  // Pattern 1: "/clear" as a standalone instruction
+  content = content.replace(/`\/clear`/g, '`start a new chat`');
+  
+  // Pattern 2: Instructions mentioning /clear
+  content = content.replace(/\/clear first/gi, 'Start a new chat first');
+  content = content.replace(/Run \/clear/gi, 'Start a new chat');
+  content = content.replace(/run \/clear/gi, 'start a new chat');
+  
+  // Pattern 3: Inline /clear mentions with specific context
+  content = content.replace(/<sub>`\/clear` first → fresh context window<\/sub>/g, 
+    '<sub>Start a new chat → fresh context window</sub>');
+  
+  // Pattern 4: Debug workflow specific patterns
+  content = content.replace(/Safe to \/clear/gi, 'Safe to start a new chat');
+  content = content.replace(/Survives `\/clear`/g, 'Survives chat resets');
+  content = content.replace(/across `\/clear`/g, 'across chat resets');
+  
+  return content;
+}
+
+/**
  * Recursively copy directory, replacing paths in .md files
  */
 function copyWithPathReplacement(srcDir, destDir, pathPrefix, isCursor) {
@@ -121,15 +158,24 @@ function copyWithPathReplacement(srcDir, destDir, pathPrefix, isCursor) {
     if (entry.isDirectory()) {
       copyWithPathReplacement(srcPath, destPath, pathPrefix, isCursor);
     } else if (entry.name.endsWith('.md')) {
-      // Replace ~/.claude/ with the appropriate prefix in markdown files
       let content = fs.readFileSync(srcPath, 'utf8');
+      
+      // Replace config directory paths with the appropriate prefix for the target platform
+      // Source files may use either ~/.cursor/ or ~/.claude/, install transforms for target
+      content = content.replace(/~\/\.cursor\//g, pathPrefix);
+      content = content.replace(/~\/\.claude\//g, pathPrefix);
+      
+      // For Cursor: transform command syntax and /clear references
       if (isCursor) {
-        // Replace ~/.claude/ with ~/.cursor/ for Cursor
-        content = content.replace(/~\/\.claude\//g, pathPrefix);
-      } else {
-        // Keep ~/.claude/ for Claude Code
-        content = content.replace(/~\/\.claude\//g, pathPrefix);
+        content = transformForCursor(content);
       }
+      
+      fs.writeFileSync(destPath, content);
+    } else if (entry.name.endsWith('.json')) {
+      // Copy JSON files with path replacement if needed
+      let content = fs.readFileSync(srcPath, 'utf8');
+      content = content.replace(/~\/\.cursor\//g, pathPrefix);
+      content = content.replace(/~\/\.claude\//g, pathPrefix);
       fs.writeFileSync(destPath, content);
     } else {
       fs.copyFileSync(srcPath, destPath);
@@ -173,6 +219,8 @@ function install(isGlobal) {
     : `./${defaultDirName}/`;
 
   const platformName = isCursor ? 'Cursor' : 'Claude Code';
+  const commandSyntax = isCursor ? '/gsd/help' : '/gsd:help';
+  
   console.log(`  Installing to ${cyan}${locationLabel}${reset} (${platformName})\n`);
 
   // Create commands directory
@@ -192,7 +240,7 @@ function install(isGlobal) {
   console.log(`  ${green}✓${reset} Installed get-shit-done`);
 
   console.log(`
-  ${green}Done!${reset} Launch ${platformName} and run ${cyan}/gsd/help${reset}.
+  ${green}Done!${reset} Launch ${platformName} and run ${cyan}${commandSyntax}${reset}.
 `);
 }
 

@@ -1,5 +1,5 @@
 ---
-name: gsd/execute-phase
+name: gsd:execute-phase
 description: Execute all plans in a phase with intelligent parallelization
 argument-hint: "<phase-number>"
 allowed-tools:
@@ -22,6 +22,10 @@ Analyzes plan dependencies to identify independent plans that can run concurrent
 Spawns background agents for parallel execution, each agent commits its own tasks atomically.
 
 **Critical constraint:** One subagent per plan, always. This is for context isolation, not parallelization. Even strictly sequential plans spawn separate subagents so each starts with fresh 200k context at 0%.
+
+**Platform Support:**
+- **Claude Code:** Uses Task tool to spawn background subagents
+- **Cursor IDE:** Leverages Cursor's Agent Skills and native subagent system for parallel execution
 
 Use this command when:
 - Phase has 2+ unexecuted plans
@@ -47,7 +51,7 @@ Phase number: $ARGUMENTS (required)
 <process>
 1. Validate phase exists in roadmap
 2. Find all PLAN.md files without matching SUMMARY.md
-3. If 0 or 1 plans: suggest /gsd/execute-plan instead
+3. If 0 or 1 plans: suggest /gsd:execute-plan instead
 4. If 2+ plans: follow execute-phase.md workflow
 5. Monitor parallel agents until completion
 6. Present results and next steps

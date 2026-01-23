@@ -1,5 +1,5 @@
 ---
-name: gsd/new-project
+name: gsd:new-project
 description: Initialize a new project with deep context gathering and PROJECT.md
 allowed-tools:
   - Read
@@ -36,7 +36,7 @@ Creates `.planning/` with PROJECT.md and config.json.
 
 1. **Abort if project exists:**
    - Use Read to check for `.planning/PROJECT.md`.
-   - If it exists, output: `ERROR: Project already initialized. Use /gsd/progress` and exit.
+   - If it exists, output: `ERROR: Project already initialized. Use /gsd:progress` and exit.
 
 2. **Initialize git repo in THIS directory** (required even if inside a parent repo):
    - Use Glob to check for a `.git` directory or `.git` file in the current directory (worktrees use a file).
@@ -68,12 +68,12 @@ Use AskUserQuestion:
 - header: "Existing Code"
 - question: "I detected existing code in this directory. Would you like to map the codebase first?"
 - options:
-  - "Map codebase first" — Run /gsd/map-codebase to understand existing architecture (Recommended)
+  - "Map codebase first" — Run /gsd:map-codebase to understand existing architecture (Recommended)
   - "Skip mapping" — Proceed with project initialization
 
 **If "Map codebase first":**
 ```
-Run `/gsd/map-codebase` first, then return to `/gsd/new-project`
+Run `/gsd:map-codebase` first, then return to `/gsd:new-project`
 ```
 Exit command.
 
@@ -257,7 +257,7 @@ Use AskUserQuestion:
   - "Disabled" — Execute plans sequentially (Recommended)
   - "Enabled" — Run independent plans in parallel (experimental, may not yield best results)
 
-**Parallelization is experimental.** When enabled, `/gsd/execute-phase` spawns multiple agents for independent plans. Still being refined—sequential execution is more reliable. Can be changed later in config.json.
+**Parallelization is experimental.** When enabled, `/gsd:execute-phase` spawns multiple agents for independent plans. Still being refined—sequential execution is more reliable. Can be changed later in config.json.
 
 </step>
 
@@ -297,7 +297,7 @@ Project initialized:
 
 **[Project Name]** — create roadmap
 
-`/gsd/create-roadmap`
+`/gsd:create-roadmap`
 
 <sub>`/clear` first → fresh context window</sub>
 
