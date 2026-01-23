@@ -1,5 +1,5 @@
 ---
-name: gsd:execute-plan
+name: gsd/execute-plan
 description: Execute a PLAN.md file
 argument-hint: "[path-to-PLAN.md]"
 allowed-tools:

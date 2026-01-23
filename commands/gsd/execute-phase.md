@@ -1,5 +1,5 @@
 ---
-name: gsd:execute-phase
+name: gsd/execute-phase
 description: Execute all plans in a phase with intelligent parallelization
 argument-hint: "<phase-number>"
 allowed-tools:

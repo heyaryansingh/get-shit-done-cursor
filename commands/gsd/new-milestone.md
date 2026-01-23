@@ -1,5 +1,5 @@
 ---
-name: gsd:new-milestone
+name: gsd/new-milestone
 description: Create a new milestone with phases for an existing project
 argument-hint: "[milestone name, e.g., 'v2.0 Features']"
 ---

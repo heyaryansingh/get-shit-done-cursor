@@ -1,5 +1,5 @@
 ---
-name: gsd:plan-fix
+name: gsd/plan-fix
 description: Plan fixes for UAT issues from verify-work
 argument-hint: "[plan, e.g., '04-02']"
 allowed-tools:

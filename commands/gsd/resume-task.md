@@ -1,5 +1,5 @@
 ---
-name: gsd:resume-task
+name: gsd/resume-task
 description: Resume an interrupted subagent execution
 argument-hint: "[agent-id]"
 allowed-tools:
