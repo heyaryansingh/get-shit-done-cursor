@@ -137,7 +137,7 @@ If any issues found:
 **Actual:** [What actually happened]
 ```
 
-**Note:** Issues go to phase-scoped file, NOT global `.planning/ISSUES.md`. This keeps UAT findings tied to the specific work being tested and enables `/gsd:plan-fix` to address them.
+**Note:** Issues go to phase-scoped file, NOT global `.planning/ISSUES.md`. This keeps UAT findings tied to the specific work being tested and enables `/gsd/plan-fix` to address them.
 </step>
 
 <step name="summarize">
@@ -165,7 +165,7 @@ If any issues found:
 ## Next Steps
 [Based on verdict:]
 - If clean: Suggest proceeding to next phase
-- If issues: Suggest /gsd:plan-fix to address
+- If issues: Suggest /gsd/plan-fix to address
 ```
 </step>
 
@@ -183,7 +183,7 @@ If all passed:
 - "Done" — Finish testing session
 
 If issues found:
-- "Plan fixes" — Create plan to address issues (/gsd:plan-fix)
+- "Plan fixes" — Create plan to address issues (/gsd/plan-fix)
 - "Log and continue" — Issues logged, proceed anyway
 - "Review issues" — Look at logged issues in detail
 - "Done" — Finish testing session

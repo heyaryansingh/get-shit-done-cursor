@@ -150,7 +150,7 @@ Read any existing PLAN.md or DISCOVERY.md in the phase directory.
 
 If roadmap flagged `Research: Likely`, Level 0 (skip) is not available.
 
-For niche domains (3D, games, audio, shaders, ML), suggest `/gsd:research-phase` before plan-phase.
+For niche domains (3D, games, audio, shaders, ML), suggest `/gsd/research-phase` before plan-phase.
 </step>
 
 <step name="read_project_history">
@@ -231,19 +231,19 @@ Understand:
 - Phase goal (from roadmap)
 - What exists already (scan codebase if mid-project)
 - Dependencies met (previous phases complete?)
-- Any {phase}-RESEARCH.md (from /gsd:research-phase)
+- Any {phase}-RESEARCH.md (from /gsd/research-phase)
 - Any DISCOVERY.md (from mandatory discovery)
-- Any {phase}-CONTEXT.md (from /gsd:discuss-phase)
+- Any {phase}-CONTEXT.md (from /gsd/discuss-phase)
 
 ```bash
 # If mid-project, understand current state
 ls -la src/ 2>/dev/null
 cat package.json 2>/dev/null | head -20
 
-# Check for ecosystem research (from /gsd:research-phase)
+# Check for ecosystem research (from /gsd/research-phase)
 cat .planning/phases/XX-name/${PHASE}-RESEARCH.md 2>/dev/null
 
-# Check for phase context (from /gsd:discuss-phase)
+# Check for phase context (from /gsd/discuss-phase)
 cat .planning/phases/XX-name/${PHASE}-CONTEXT.md 2>/dev/null
 ```
 
@@ -251,7 +251,7 @@ cat .planning/phases/XX-name/${PHASE}-CONTEXT.md 2>/dev/null
 
 **If CONTEXT.md exists:** Honor vision, prioritize essential, respect boundaries, incorporate specifics.
 
-**If neither exist:** Suggest /gsd:research-phase for niche domains, /gsd:discuss-phase for simpler domains, or proceed with roadmap only.
+**If neither exist:** Suggest /gsd/research-phase for niche domains, /gsd/discuss-phase for simpler domains, or proceed with roadmap only.
 </step>
 
 <step name="break_into_tasks">
@@ -340,7 +340,7 @@ See ~/.claude/get-shit-done/references/checkpoints.md for checkpoint structure.
    - `depends_on: [plan-ids]` — explicit dependencies (empty if independent)
    - `files_modified: [paths]` — files this plan will modify
 
-   `/gsd:execute-phase` uses these to detect parallelization opportunities automatically.
+   `/gsd/execute-phase` uses these to detect parallelization opportunities automatically.
 
 **Output:** Task groupings optimized for independence, frontmatter values determined.
 </step>
@@ -447,7 +447,7 @@ domain: [optional]
 ---
 ```
 
-**Parallelization is automatic:** `/gsd:execute-phase` analyzes `depends_on` and `files_modified` to determine which plans can run in parallel. No explicit flag needed.
+**Parallelization is automatic:** `/gsd/execute-phase` analyzes `depends_on` and `files_modified` to determine which plans can run in parallel. No explicit flag needed.
 
 **Context section population from frontmatter analysis:**
 
@@ -527,12 +527,12 @@ Phase {X} planned: {N} plan(s) created in .planning/phases/XX-name/
 [If 1 plan created:]
 **{phase}-01: [Plan Name]** - [objective summary]
 
-`/gsd:execute-plan .planning/phases/XX-name/{phase}-01-PLAN.md`
+`/gsd/execute-plan .planning/phases/XX-name/{phase}-01-PLAN.md`
 
 [If 2+ plans created:]
 **Phase {X}: [Phase Name]** - {N} plans ready
 
-`/gsd:execute-phase {X}`
+`/gsd/execute-phase {X}`
 
 <sub>`/clear` first - fresh context window</sub>
 
@@ -540,7 +540,7 @@ Phase {X} planned: {N} plan(s) created in .planning/phases/XX-name/
 
 **Also available:**
 - Review/adjust tasks before executing
-[If 2+ plans: - `/gsd:execute-plan {phase}-01-PLAN.md` - run plans one at a time interactively]
+[If 2+ plans: - `/gsd/execute-plan {phase}-01-PLAN.md` - run plans one at a time interactively]
 [If 2+ plans: - View all plans: `ls .planning/phases/XX-name/*-PLAN.md`]
 
 ---

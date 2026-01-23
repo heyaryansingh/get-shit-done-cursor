@@ -10,7 +10,7 @@ allowed-tools:
 ---
 
 <objective>
-Monitor background agent status from /gsd:execute-phase parallel execution.
+Monitor background agent status from /gsd/execute-phase parallel execution.
 
 Shows running/completed agents from agent-history.json.
 Uses TaskOutput to check status of background tasks.
@@ -34,7 +34,7 @@ If file doesn't exist or has no entries:
 ```
 No background agents tracked.
 
-Run /gsd:execute-phase to spawn parallel agents.
+Run /gsd/execute-phase to spawn parallel agents.
 ```
 Exit.
 </step>
@@ -89,7 +89,7 @@ Background Agents
 Progress: 2/3 complete
 
 ════════════════════════════════════════
-Wait for all: /gsd:status --wait
+Wait for all: /gsd/status --wait
 ```
 
 **Status icons:**
@@ -141,7 +141,7 @@ Update agent-history.json with completion status for each.
 
 All parallel agents finished. Review results:
 
-`/gsd:progress`
+`/gsd/progress`
 
 <sub>`/clear` first → fresh context window</sub>
 

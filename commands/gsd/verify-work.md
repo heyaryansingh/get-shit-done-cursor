@@ -49,7 +49,7 @@ Scope: $ARGUMENTS (optional)
    - Present summary with verdict
 4. Offer next steps based on results:
    - If all passed: Continue to next phase
-   - If issues found: `/gsd:plan-fix {phase} {plan}` to create fix plan
+   - If issues found: `/gsd/plan-fix {phase} {plan}` to create fix plan
 </process>
 
 <anti_patterns>

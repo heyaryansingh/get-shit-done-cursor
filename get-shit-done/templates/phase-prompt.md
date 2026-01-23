@@ -339,7 +339,7 @@ Output: Stripe integration with user-linked payments.
 **Parallelization rules:**
 - Empty `depends_on` + no file conflicts with sibling plans = can run parallel
 - Non-empty `depends_on` OR shared files = must run sequentially
-- `/gsd:execute-phase` analyzes this automatically
+- `/gsd/execute-phase` analyzes this automatically
 
 </good_examples>
 

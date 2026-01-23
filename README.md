@@ -94,7 +94,7 @@ npx gsd-cursor --cursor --local
 **After installation:**
 1. **Restart Cursor** to reload slash commands
 2. Open the Cursor chat (Ctrl+L or Cmd+L)
-3. Type `/gsd:help` to verify it's working
+3. Type `/gsd/help` to verify it's working
 
 **For global installation (available in all projects):**
 ```bash
@@ -114,7 +114,7 @@ npx github:heyaryansingh/get-shit-done-cursor --cursor --local
 
 This Cursor edition focuses on Cursor IDE. For Claude Code support, please use the [original repository](https://github.com/glittercowboy/get-shit-done).
 
-That's it. Verify with `/gsd:help` inside your Cursor or Claude Code interface.
+That's it. Verify with `/gsd/help` inside your Cursor or Claude Code interface.
 
 <details>
 <summary><strong>Non-interactive Install (Docker, CI, Scripts)</strong></summary>
@@ -238,7 +238,7 @@ GSD works seamlessly in Cursor. Install once per project, then use slash command
 
 In Cursor chat, type:
 ```
-/gsd:new-project
+/gsd/new-project
 ```
 
 The system asks questions about your goals, constraints, tech preferences, and edge cases. Keeps asking until everything is captured. Creates **PROJECT.md** in `.planning/`.
@@ -247,7 +247,7 @@ The system asks questions about your goals, constraints, tech preferences, and e
 
 In Cursor chat:
 ```
-/gsd:create-roadmap
+/gsd/create-roadmap
 ```
 
 Produces:
@@ -257,25 +257,25 @@ Produces:
 **3. Plan and execute phases**
 
 ```
-/gsd:plan-phase 1      # System creates atomic task plans
-/gsd:execute-plan .planning/phases/01-foundation/01-01-PLAN.md
+/gsd/plan-phase 1      # System creates atomic task plans
+/gsd/execute-plan .planning/phases/01-foundation/01-01-PLAN.md
 ```
 
 Each phase breaks into 2-3 atomic tasks. Each task runs in a fresh context — 200k tokens purely for implementation, zero degradation.
 
 **For multi-plan phases:**
 ```
-/gsd:execute-phase 1   # Run all plans in parallel, "walk away" execution
+/gsd/execute-phase 1   # Run all plans in parallel, "walk away" execution
 ```
 
-Use `/gsd:execute-plan` for interactive single-plan execution with checkpoints. Use `/gsd:execute-phase` when you have multiple plans and want parallel "walk away" automation.
+Use `/gsd/execute-plan` for interactive single-plan execution with checkpoints. Use `/gsd/execute-phase` when you have multiple plans and want parallel "walk away" automation.
 
 **4. Ship and iterate**
 
 ```
-/gsd:complete-milestone   # Archive v1, prep for v2
-/gsd:add-phase            # Append new work
-/gsd:insert-phase 2       # Slip urgent work between phases
+/gsd/complete-milestone   # Archive v1, prep for v2
+/gsd/add-phase            # Append new work
+/gsd/insert-phase 2       # Slip urgent work between phases
 ```
 
 Ship your MVP in a day. Add features. Insert hotfixes. The system stays modular — you're never stuck.
@@ -300,10 +300,10 @@ Ship your MVP in a day. Add features. Insert hotfixes. The system stays modular 
 3. **Restart Cursor** and open your project
 
 4. **Start using GSD commands:**
-   - `/gsd:new-project` - Initialize your project
-   - `/gsd:create-roadmap` - Create your development roadmap
-   - `/gsd:plan-phase 1` - Plan the first phase
-   - `/gsd:execute-plan` - Execute your plans
+   - `/gsd/new-project` - Initialize your project
+   - `/gsd/create-roadmap` - Create your development roadmap
+   - `/gsd/plan-phase 1` - Plan the first phase
+   - `/gsd/execute-plan` - Execute your plans
 
 ### For Existing Projects
 
@@ -322,7 +322,7 @@ Ship your MVP in a day. Add features. Insert hotfixes. The system stays modular 
 4. **Map your existing codebase:**
    In Cursor chat, type:
    ```
-   /gsd:map-codebase
+   /gsd/map-codebase
    ```
    
    This analyzes your codebase and creates `.planning/codebase/` with 7 documents:
@@ -339,15 +339,15 @@ Ship your MVP in a day. Add features. Insert hotfixes. The system stays modular 
 
 5. **Initialize project:**
    ```
-   /gsd:new-project
+   /gsd/new-project
    ```
    
    The system now knows your codebase. Questions focus on what you're adding/changing.
 
 6. **Continue as normal:**
-   - `/gsd:create-roadmap` - Create roadmap
-   - `/gsd:plan-phase 1` - Plan phases
-   - `/gsd:execute-plan` - Execute plans
+   - `/gsd/create-roadmap` - Create roadmap
+   - `/gsd/plan-phase 1` - Plan phases
+   - `/gsd/execute-plan` - Execute plans
    
    The codebase docs load automatically during planning. The AI knows your patterns, conventions, and where to put things.
 
@@ -438,33 +438,33 @@ You're never locked in. The system adapts.
 
 | Command | What it does |
 |---------|--------------|
-| `/gsd:new-project` | Extract your idea through questions, create PROJECT.md |
-| `/gsd:create-roadmap` | Create roadmap and state tracking |
-| `/gsd:map-codebase` | Map existing codebase for brownfield projects |
-| `/gsd:plan-phase [N]` | Generate task plans for phase |
-| `/gsd:execute-plan` | Run single plan via subagent |
-| `/gsd:execute-phase <N>` | Execute all plans in phase N with parallel agents |
-| `/gsd:status [--wait]` | Check background agent status from parallel execution |
-| `/gsd:progress` | Where am I? What's next? |
-| `/gsd:verify-work [N]` | User acceptance test of phase or plan ¹ |
-| `/gsd:plan-fix [plan]` | Plan fixes for UAT issues from verify-work |
-| `/gsd:complete-milestone` | Ship it, prep next version |
-| `/gsd:discuss-milestone` | Gather context for next milestone |
-| `/gsd:new-milestone [name]` | Create new milestone with phases |
-| `/gsd:add-phase` | Append phase to roadmap |
-| `/gsd:insert-phase [N]` | Insert urgent work |
-| `/gsd:remove-phase [N]` | Remove future phase, renumber subsequent |
-| `/gsd:discuss-phase [N]` | Gather context before planning |
-| `/gsd:research-phase [N]` | Deep ecosystem research for niche domains |
-| `/gsd:list-phase-assumptions [N]` | See what Claude thinks before you correct it |
-| `/gsd:pause-work` | Create handoff file when stopping mid-phase |
-| `/gsd:resume-work` | Restore from last session |
-| `/gsd:resume-task [id]` | Resume interrupted subagent execution |
-| `/gsd:consider-issues` | Review deferred issues, close resolved, identify urgent |
-| `/gsd:add-todo [desc]` | Capture idea or task from conversation for later |
-| `/gsd:check-todos [area]` | List pending todos, select one to work on |
-| `/gsd:debug [desc]` | Systematic debugging with persistent state across `/clear` |
-| `/gsd:help` | Show all commands and usage guide |
+| `/gsd/new-project` | Extract your idea through questions, create PROJECT.md |
+| `/gsd/create-roadmap` | Create roadmap and state tracking |
+| `/gsd/map-codebase` | Map existing codebase for brownfield projects |
+| `/gsd/plan-phase [N]` | Generate task plans for phase |
+| `/gsd/execute-plan` | Run single plan via subagent |
+| `/gsd/execute-phase <N>` | Execute all plans in phase N with parallel agents |
+| `/gsd/status [--wait]` | Check background agent status from parallel execution |
+| `/gsd/progress` | Where am I? What's next? |
+| `/gsd/verify-work [N]` | User acceptance test of phase or plan ¹ |
+| `/gsd/plan-fix [plan]` | Plan fixes for UAT issues from verify-work |
+| `/gsd/complete-milestone` | Ship it, prep next version |
+| `/gsd/discuss-milestone` | Gather context for next milestone |
+| `/gsd/new-milestone [name]` | Create new milestone with phases |
+| `/gsd/add-phase` | Append phase to roadmap |
+| `/gsd/insert-phase [N]` | Insert urgent work |
+| `/gsd/remove-phase [N]` | Remove future phase, renumber subsequent |
+| `/gsd/discuss-phase [N]` | Gather context before planning |
+| `/gsd/research-phase [N]` | Deep ecosystem research for niche domains |
+| `/gsd/list-phase-assumptions [N]` | See what Claude thinks before you correct it |
+| `/gsd/pause-work` | Create handoff file when stopping mid-phase |
+| `/gsd/resume-work` | Restore from last session |
+| `/gsd/resume-task [id]` | Resume interrupted subagent execution |
+| `/gsd/consider-issues` | Review deferred issues, close resolved, identify urgent |
+| `/gsd/add-todo [desc]` | Capture idea or task from conversation for later |
+| `/gsd/check-todos [area]` | List pending todos, select one to work on |
+| `/gsd/debug [desc]` | Systematic debugging with persistent state across `/clear` |
+| `/gsd/help` | Show all commands and usage guide |
 
 <sup>¹ Contributed by reddit user OracleGreyBeard</sup>
 
@@ -478,7 +478,7 @@ You're never locked in. The system adapts.
 - Make sure you're in the project directory where you ran the install command
 
 **Commands not working as expected?**
-- Run `/gsd:help` to verify installation
+- Run `/gsd/help` to verify installation
 - Re-run `npx get-shit-done-cursor --cursor --local` to reinstall
 
 **Updating to the latest version?**

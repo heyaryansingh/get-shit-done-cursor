@@ -45,7 +45,7 @@ Plan path: $ARGUMENTS
 </context>
 
 <process>
-1. Check .planning/ directory exists (error if not - user should run /gsd:new-project)
+1. Check .planning/ directory exists (error if not - user should run /gsd/new-project)
 2. Verify plan at $ARGUMENTS exists
 3. Check if SUMMARY.md already exists (plan already executed?)
 4. Load workflow config for mode (interactive/yolo)

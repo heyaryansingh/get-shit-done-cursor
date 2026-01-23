@@ -43,7 +43,7 @@ If no argument provided:
 ```
 Error: Plan number required.
 
-Usage: /gsd:plan-fix 04-02
+Usage: /gsd/plan-fix 04-02
 
 This creates a fix plan from .planning/phases/XX-name/04-02-ISSUES.md
 ```
@@ -62,7 +62,7 @@ If not found:
 ```
 No ISSUES.md found for plan {plan}.
 
-ISSUES.md files are created by /gsd:verify-work when UAT finds issues.
+ISSUES.md files are created by /gsd/verify-work when UAT finds issues.
 If no issues were found during testing, no fix plan is needed.
 ```
 Exit.
@@ -192,7 +192,7 @@ Would you like to:
 ```
 
 Use AskUserQuestion to get response.
-If execute: `/gsd:execute-plan .planning/phases/XX-name/{plan}-FIX.md`
+If execute: `/gsd/execute-plan .planning/phases/XX-name/{plan}-FIX.md`
 </step>
 
 </process>

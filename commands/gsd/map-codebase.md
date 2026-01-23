@@ -37,8 +37,8 @@ Focus area: $ARGUMENTS (optional - if provided, tells agents to focus on specifi
 Check for .planning/STATE.md - loads context if project already initialized
 
 **This command can run:**
-- Before /gsd:new-project (brownfield codebases) - creates codebase map first
-- After /gsd:new-project (greenfield codebases) - updates codebase map as code evolves
+- Before /gsd/new-project (brownfield codebases) - creates codebase map first
+- After /gsd/new-project (greenfield codebases) - updates codebase map as code evolves
 - Anytime to refresh codebase understanding
 </context>
 
@@ -72,7 +72,7 @@ Check for .planning/STATE.md - loads context if project already initialized
    - TESTING.md - Test structure, coverage, practices
    - INTEGRATIONS.md - APIs, databases, external services
    - CONCERNS.md - Technical debt, risks, issues
-6. Offer next steps (typically: /gsd:new-project or /gsd:plan-phase)
+6. Offer next steps (typically: /gsd/new-project or /gsd/plan-phase)
 </process>
 
 <success_criteria>

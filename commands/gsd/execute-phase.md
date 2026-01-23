@@ -47,7 +47,7 @@ Phase number: $ARGUMENTS (required)
 <process>
 1. Validate phase exists in roadmap
 2. Find all PLAN.md files without matching SUMMARY.md
-3. If 0 or 1 plans: suggest /gsd:execute-plan instead
+3. If 0 or 1 plans: suggest /gsd/execute-plan instead
 4. If 2+ plans: follow execute-phase.md workflow
 5. Monitor parallel agents until completion
 6. Present results and next steps

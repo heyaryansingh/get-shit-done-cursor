@@ -49,12 +49,12 @@ Agent ID: $ARGUMENTS (optional - defaults to most recent)
 <usage>
 **Resume most recent interrupted agent:**
 ```
-/gsd:resume-task
+/gsd/resume-task
 ```
 
 **Resume specific agent by ID:**
 ```
-/gsd:resume-task agent_01HXYZ123
+/gsd/resume-task agent_01HXYZ123
 ```
 
 **Find available agents to resume:**
@@ -64,7 +64,7 @@ Check `.planning/agent-history.json` for entries with status "spawned" or "inter
 <error_handling>
 **No agent to resume:**
 - current-agent-id.txt empty or missing
-- Solution: Run /gsd:progress to check project status
+- Solution: Run /gsd/progress to check project status
 
 **Agent already completed:**
 - Agent finished successfully, nothing to resume
@@ -76,7 +76,7 @@ Check `.planning/agent-history.json` for entries with status "spawned" or "inter
 
 **Resume failed:**
 - Agent context expired or invalidated
-- Solution: Start fresh with /gsd:execute-plan
+- Solution: Start fresh with /gsd/execute-plan
 </error_handling>
 
 <success_criteria>
