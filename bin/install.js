@@ -33,6 +33,7 @@ const args = process.argv.slice(2);
 const hasGlobal = args.includes('--global') || args.includes('-g');
 const hasLocal = args.includes('--local') || args.includes('-l');
 const hasCursor = args.includes('--cursor');
+const hasAntigravity = args.includes('--antigravity');
 
 // Parse --config-dir argument
 function parseConfigDirArg() {
@@ -66,12 +67,14 @@ if (hasHelp) {
     ${cyan}-g, --global${reset}              Install globally (to config directory)
     ${cyan}-l, --local${reset}               Install locally (to ./.claude or ./.cursor)
     ${cyan}--cursor${reset}                  Install for Cursor IDE (default: Claude Code)
+    ${cyan}--antigravity${reset}             Install for Antigravity (default: Claude Code)
     ${cyan}-c, --config-dir <path>${reset}   Specify custom config directory
     ${cyan}-h, --help${reset}                Show this help message
 
   ${yellow}Platform Differences:${reset}
     ${cyan}Claude Code${reset}  Uses colon syntax: /gsd:help, /gsd:plan-phase
     ${cyan}Cursor IDE${reset}   Uses slash syntax: /gsd/help, /gsd/plan-phase
+    ${cyan}Antigravity${reset}  Uses slash syntax: /gsd/help, /gsd/plan-phase
 
   ${yellow}Examples:${reset}
     ${dim}# Install to default ~/.claude directory (Claude Code)${reset}
@@ -96,6 +99,7 @@ if (hasHelp) {
   ${yellow}Notes:${reset}
     The --config-dir option takes priority over environment variables.
     Use --cursor flag to install for Cursor IDE instead of Claude Code.
+    Use --antigravity flag to install for Antigravity instead of Claude Code.
 `);
   process.exit(0);
 }
@@ -118,35 +122,35 @@ function expandTilde(filePath) {
 function transformForCursor(content) {
   // Convert name: field in frontmatter (gsd:command -> gsd/command)
   content = content.replace(/^(name:\s*)gsd:/gm, '$1gsd/');
-  
+
   // Convert documentation references (/gsd:command -> /gsd/command)
   content = content.replace(/\/gsd:/g, '/gsd/');
-  
+
   // Convert /clear command references to Cursor-friendly instructions
   // Pattern 1: "/clear" as a standalone instruction
   content = content.replace(/`\/clear`/g, '`start a new chat`');
-  
+
   // Pattern 2: Instructions mentioning /clear
   content = content.replace(/\/clear first/gi, 'Start a new chat first');
   content = content.replace(/Run \/clear/gi, 'Start a new chat');
   content = content.replace(/run \/clear/gi, 'start a new chat');
-  
+
   // Pattern 3: Inline /clear mentions with specific context
-  content = content.replace(/<sub>`\/clear` first → fresh context window<\/sub>/g, 
+  content = content.replace(/<sub>`\/clear` first → fresh context window<\/sub>/g,
     '<sub>Start a new chat → fresh context window</sub>');
-  
+
   // Pattern 4: Debug workflow specific patterns
   content = content.replace(/Safe to \/clear/gi, 'Safe to start a new chat');
   content = content.replace(/Survives `\/clear`/g, 'Survives chat resets');
   content = content.replace(/across `\/clear`/g, 'across chat resets');
-  
+
   return content;
 }
 
 /**
  * Recursively copy directory, replacing paths in .md files
  */
-function copyWithPathReplacement(srcDir, destDir, pathPrefix, isCursor) {
+function copyWithPathReplacement(srcDir, destDir, pathPrefix, useSlashSyntax) {
   fs.mkdirSync(destDir, { recursive: true });
 
   const entries = fs.readdirSync(srcDir, { withFileTypes: true });
@@ -156,20 +160,20 @@ function copyWithPathReplacement(srcDir, destDir, pathPrefix, isCursor) {
     const destPath = path.join(destDir, entry.name);
 
     if (entry.isDirectory()) {
-      copyWithPathReplacement(srcPath, destPath, pathPrefix, isCursor);
+      copyWithPathReplacement(srcPath, destPath, pathPrefix, useSlashSyntax);
     } else if (entry.name.endsWith('.md')) {
       let content = fs.readFileSync(srcPath, 'utf8');
-      
+
       // Replace config directory paths with the appropriate prefix for the target platform
       // Source files may use either ~/.cursor/ or ~/.claude/, install transforms for target
       content = content.replace(/~\/\.cursor\//g, pathPrefix);
       content = content.replace(/~\/\.claude\//g, pathPrefix);
-      
+
       // For Cursor: transform command syntax and /clear references
-      if (isCursor) {
+      if (useSlashSyntax) {
         content = transformForCursor(content);
       }
-      
+
       fs.writeFileSync(destPath, content);
     } else if (entry.name.endsWith('.json')) {
       // Copy JSON files with path replacement if needed
@@ -188,21 +192,26 @@ function copyWithPathReplacement(srcDir, destDir, pathPrefix, isCursor) {
  */
 function install(isGlobal) {
   const src = path.join(__dirname, '..');
-  
+
   // Determine target platform and directory
   const isCursor = hasCursor;
-  const defaultDirName = isCursor ? '.cursor' : '.claude';
-  
+  const isAntigravity = hasAntigravity;
+  let defaultDirName = '.claude';
+  if (isCursor) defaultDirName = '.cursor';
+  if (isAntigravity) defaultDirName = '.antigravity';
+
   // Priority: explicit --config-dir arg > platform-specific env var > default
   let configDir;
   if (explicitConfigDir) {
     configDir = expandTilde(explicitConfigDir);
   } else if (isCursor) {
     configDir = expandTilde(process.env.CURSOR_CONFIG_DIR);
+  } else if (isAntigravity) {
+    configDir = expandTilde(process.env.ANTIGRAVITY_CONFIG_DIR);
   } else {
     configDir = expandTilde(process.env.CLAUDE_CONFIG_DIR);
   }
-  
+
   const defaultGlobalDir = configDir || path.join(os.homedir(), defaultDirName);
   const targetDir = isGlobal
     ? defaultGlobalDir
@@ -218,9 +227,12 @@ function install(isGlobal) {
     ? (configDir ? `${targetDir}/` : `~/${defaultDirName}/`)
     : `./${defaultDirName}/`;
 
-  const platformName = isCursor ? 'Cursor' : 'Claude Code';
-  const commandSyntax = isCursor ? '/gsd/help' : '/gsd:help';
-  
+  let platformName = 'Claude Code';
+  if (isCursor) platformName = 'Cursor';
+  if (isAntigravity) platformName = 'Antigravity';
+
+  const commandSyntax = (isCursor || isAntigravity) ? '/gsd/help' : '/gsd:help';
+
   console.log(`  Installing to ${cyan}${locationLabel}${reset} (${platformName})\n`);
 
   // Create commands directory
@@ -230,13 +242,13 @@ function install(isGlobal) {
   // Copy commands/gsd with path replacement
   const gsdSrc = path.join(src, 'commands', 'gsd');
   const gsdDest = path.join(commandsDir, 'gsd');
-  copyWithPathReplacement(gsdSrc, gsdDest, pathPrefix, isCursor);
+  copyWithPathReplacement(gsdSrc, gsdDest, pathPrefix, isCursor || isAntigravity);
   console.log(`  ${green}✓${reset} Installed commands/gsd`);
 
   // Copy get-shit-done skill with path replacement
   const skillSrc = path.join(src, 'get-shit-done');
   const skillDest = path.join(targetDir, 'get-shit-done');
-  copyWithPathReplacement(skillSrc, skillDest, pathPrefix, isCursor);
+  copyWithPathReplacement(skillSrc, skillDest, pathPrefix, isCursor || isAntigravity);
   console.log(`  ${green}✓${reset} Installed get-shit-done`);
 
   console.log(`
@@ -254,20 +266,27 @@ function promptLocation() {
   });
 
   const isCursor = hasCursor;
-  const defaultDirName = isCursor ? '.cursor' : '.claude';
-  
+  const isAntigravity = hasAntigravity;
+  let defaultDirName = '.claude';
+  if (isCursor) defaultDirName = '.cursor';
+  if (isAntigravity) defaultDirName = '.antigravity';
+
   let configDir;
   if (explicitConfigDir) {
     configDir = expandTilde(explicitConfigDir);
   } else if (isCursor) {
     configDir = expandTilde(process.env.CURSOR_CONFIG_DIR);
+  } else if (isAntigravity) {
+    configDir = expandTilde(process.env.ANTIGRAVITY_CONFIG_DIR);
   } else {
     configDir = expandTilde(process.env.CLAUDE_CONFIG_DIR);
   }
-  
+
   const globalPath = configDir || path.join(os.homedir(), defaultDirName);
   const globalLabel = globalPath.replace(os.homedir(), '~');
-  const platformName = isCursor ? 'Cursor' : 'Claude Code';
+  let platformName = 'Claude Code';
+  if (isCursor) platformName = 'Cursor';
+  if (isAntigravity) platformName = 'Antigravity';
 
   console.log(`  ${yellow}Where would you like to install?${reset} (${platformName})
 

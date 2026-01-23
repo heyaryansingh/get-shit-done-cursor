@@ -55,6 +55,7 @@ GSD supports multiple AI coding platforms with platform-specific command syntax:
 |----------|---------------|---------|--------------|
 | **Claude Code** | Colon (`:`) | `/gsd:help`, `/gsd:plan-phase 1` | *(none)* |
 | **Cursor IDE** | Slash (`/`) | `/gsd/help`, `/gsd/plan-phase 1` | `--cursor` |
+| **Antigravity** | Slash (`/`) | `/gsd/help`, `/gsd/plan-phase 1` | `--antigravity` |
 | **OpenCode** | Colon (`:`) | `/gsd:help`, `/gsd:plan-phase 1` | *(none)* |
 
 > **Note:** The install script automatically converts commands to the correct syntax for your platform.
@@ -122,9 +123,9 @@ npx get-shit-done-cursor --cursor --global
 
 This installs to `~/.cursor/` and makes GSD available in all your Cursor projects without reinstalling.
 
-### Quick Install for Claude Code
+### For Claude Code and OpenCode
 
-**Install in any Claude Code project:**
+**Install in any project:**
 ```bash
 npx get-shit-done-cursor --local
 ```
@@ -138,7 +139,14 @@ npx get-shit-done-cursor --global
 1. Start Claude Code
 2. Type `/gsd:help` to verify it's working
 
-> **Note:** Claude Code uses colon syntax (`:`) while Cursor uses slash syntax (`/`). The installer handles this automatically.
+### For Antigravity
+
+**Install in any project:**
+```bash
+npx get-shit-done-cursor --antigravity --local
+```
+
+> **Note:** Claude Code uses colon syntax (`:`) while Cursor and Antigravity use slash syntax (`/`). The installer handles this automatically.
 
 <details>
 <summary><strong>Non-interactive Install (Docker, CI, Scripts)</strong></summary>

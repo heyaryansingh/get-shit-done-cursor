@@ -26,6 +26,7 @@ Spawns background agents for parallel execution, each agent commits its own task
 **Platform Support:**
 - **Claude Code:** Uses Task tool to spawn background subagents
 - **Cursor IDE:** Leverages Cursor's Agent Skills and native subagent system for parallel execution
+- **Antigravity:** Uses parallel tool calls (e.g., `browser_subagent`, `run_command` in parallel) or subagents to execute multiple plans concurrently
 
 Use this command when:
 - Phase has 2+ unexecuted plans

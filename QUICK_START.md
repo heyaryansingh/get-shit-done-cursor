@@ -6,6 +6,7 @@
 |----------|--------|---------|
 | **Claude Code** | Colon (`:`) | `/gsd:help` |
 | **Cursor IDE** | Slash (`/`) | `/gsd/help` |
+| **Antigravity** | Slash (`/`) | `/gsd/help` |
 
 > **Note:** This guide shows both syntaxes. Use the one that matches your platform.
 
@@ -22,7 +23,14 @@ npx get-shit-done-cursor --cursor --local
 
 **Important:** After installation, **restart Cursor** to load the slash commands.
 
-### For Claude Code
+### For Antigravity
+
+```bash
+cd your-project-directory
+npx get-shit-done-cursor --antigravity --local
+```
+
+### For Claude Code and OpenCode
 
 ```bash
 cd your-project-directory
@@ -40,7 +48,14 @@ Open Cursor chat (Ctrl+L or Cmd+L) and type:
 /gsd/help
 ```
 
-### Claude Code
+### Antigravity
+
+In the chat, type:
+```
+/gsd/help
+```
+
+### Claude Code and OpenCode
 
 In Claude Code, type:
 ```
