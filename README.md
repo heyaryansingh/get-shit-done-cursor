@@ -2,9 +2,9 @@
 
 # GET SHIT DONE (Cursor+ Edition)
 
-**A light-weight and powerful meta-prompting, context engineering and spec-driven development system for Claude Code, Cursor IDE, and OpenCode.**
+**A light-weight and powerful meta-prompting, context engineering and spec-driven development system for Claude Code, Antigravity, Cursor IDE, and OpenCode.**
 
-> **Multi-Platform Support:** Works with Claude Code (colon syntax: `/gsd:help`), Cursor IDE (slash syntax: `/gsd/help`), and OpenCode.
+> **Multi-Platform Support:** Works with Claude Code (colon syntax: `/gsd:help`), Cursor IDE (slash syntax: `/gsd/help`), Antigravity, and OpenCode.
 
 [![npm version](https://img.shields.io/npm/v/get-shit-done-cursor?style=for-the-badge&logo=npm&logoColor=white&color=CB3837)](https://www.npmjs.com/package/get-shit-done-cursor)
 [![npm downloads](https://img.shields.io/npm/dm/get-shit-done-cursor?style=for-the-badge&logo=npm&logoColor=white&color=CB3837)](https://www.npmjs.com/package/get-shit-done-cursor)
