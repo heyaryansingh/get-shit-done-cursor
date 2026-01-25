@@ -7,6 +7,7 @@
 | **Claude Code** | Colon (`:`) | `/gsd:help` |
 | **Cursor IDE** | Slash (`/`) | `/gsd/help` |
 | **Antigravity** | Slash (`/`) | `/gsd/help` |
+| **OpenCode** | Colon (`:`) | `/gsd:help` |
 
 > **Note:** This guide shows both syntaxes. Use the one that matches your platform.
 

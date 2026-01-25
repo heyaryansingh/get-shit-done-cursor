@@ -90,6 +90,7 @@ People who want to describe what they want and have it built correctly — witho
 
 **Perfect for:**
 - Claude Code users wanting structured, reliable AI-assisted development
+- Antigravity users wanting structured, reliable AI-assisted development
 - Cursor users who want structured, reliable AI-assisted development
 - Solo developers building MVPs and side projects
 - Teams using AI coding assistants who need better context management

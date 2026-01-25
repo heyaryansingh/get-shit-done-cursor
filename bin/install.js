@@ -25,7 +25,7 @@ ${cyan}   ██████╗ ███████╗██████╗
 
   Get Shit Done ${dim}v${pkg.version}${reset}
   A meta-prompting, context engineering and spec-driven
-  development system for Claude Code and Cursor by TÂCHES.
+  development system for Claude Code, Antigravity, and Cursor by TÂCHES.
 `;
 
 // Parse args
@@ -229,13 +229,13 @@ function install(isGlobal) {
       ? targetDir.replace(os.homedir(), '~')
       : targetDir.replace(process.cwd(), '.'));
 
-  // Path prefix for file references
+  // Path prefix for file references - always use forward slashes for AI compatibility
   let pathPrefix;
   if (isAntigravity) {
     pathPrefix = './.agent/';
   } else {
     pathPrefix = isGlobal
-      ? (configDir ? `${targetDir}/` : `~/${defaultDirName}/`)
+      ? (configDir ? `${targetDir.replace(/\\/g, '/')}/` : `~/${defaultDirName}/`)
       : `./${defaultDirName}/`;
   }
 
@@ -282,7 +282,7 @@ function promptLocation() {
   const isAntigravity = hasAntigravity;
   let defaultDirName = '.claude';
   if (isCursor) defaultDirName = '.cursor';
-  if (isAntigravity) defaultDirName = '.antigravity';
+  if (isAntigravity) defaultDirName = '.agent';
 
   let configDir;
   if (explicitConfigDir) {
