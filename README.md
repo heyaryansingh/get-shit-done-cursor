@@ -1,6 +1,6 @@
 <div align="center">
 
-# GET SHIT DONE (Cursor+ Edition)
+# GET SHIT DONE (Cursor+Antigravity Edition)
 
 **A light-weight and powerful meta-prompting, context engineering and spec-driven development system for Claude Code, Antigravity, Cursor IDE, and OpenCode.**
 
