@@ -528,6 +528,7 @@ You're never locked in. The system adapts.
 - **Restart Cursor** (Cursor only) - This is required! Close and reopen Cursor after installation
 - **Claude Code:** Verify files exist in `~/.claude/commands/gsd/` (global) or `./.claude/commands/gsd/` (local)
 - **Cursor:** Verify files exist in `~/.cursor/commands/gsd/` (global) or `./.cursor/commands/gsd/` (local)
+- **Antigravity:** Verify files exist in `./.agent/workflows/gsd/` (local)
 - Make sure you're in the project directory where you ran the install command
 
 **Commands not working as expected?**

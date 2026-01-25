@@ -198,7 +198,7 @@ function install(isGlobal) {
   const isAntigravity = hasAntigravity;
   let defaultDirName = '.claude';
   if (isCursor) defaultDirName = '.cursor';
-  if (isAntigravity) defaultDirName = '.antigravity';
+  if (isAntigravity) defaultDirName = '.agent';
 
   // Priority: explicit --config-dir arg > platform-specific env var > default
   let configDir;
@@ -212,20 +212,32 @@ function install(isGlobal) {
     configDir = expandTilde(process.env.CLAUDE_CONFIG_DIR);
   }
 
-  const defaultGlobalDir = configDir || path.join(os.homedir(), defaultDirName);
-  const targetDir = isGlobal
-    ? defaultGlobalDir
-    : path.join(process.cwd(), defaultDirName);
+  // For Antigravity, always use local .agent directory (it's workspace-specific)
+  let targetDir;
+  if (isAntigravity) {
+    targetDir = path.join(process.cwd(), '.agent');
+  } else {
+    const defaultGlobalDir = configDir || path.join(os.homedir(), defaultDirName);
+    targetDir = isGlobal
+      ? defaultGlobalDir
+      : path.join(process.cwd(), defaultDirName);
+  }
 
-  const locationLabel = isGlobal
-    ? targetDir.replace(os.homedir(), '~')
-    : targetDir.replace(process.cwd(), '.');
+  const locationLabel = isAntigravity
+    ? './.agent'
+    : (isGlobal
+      ? targetDir.replace(os.homedir(), '~')
+      : targetDir.replace(process.cwd(), '.'));
 
   // Path prefix for file references
-  // Use actual path when config dir is set, otherwise use ~ shorthand
-  const pathPrefix = isGlobal
-    ? (configDir ? `${targetDir}/` : `~/${defaultDirName}/`)
-    : `./${defaultDirName}/`;
+  let pathPrefix;
+  if (isAntigravity) {
+    pathPrefix = './.agent/';
+  } else {
+    pathPrefix = isGlobal
+      ? (configDir ? `${targetDir}/` : `~/${defaultDirName}/`)
+      : `./${defaultDirName}/`;
+  }
 
   let platformName = 'Claude Code';
   if (isCursor) platformName = 'Cursor';
@@ -235,15 +247,16 @@ function install(isGlobal) {
 
   console.log(`  Installing to ${cyan}${locationLabel}${reset} (${platformName})\n`);
 
-  // Create commands directory
-  const commandsDir = path.join(targetDir, 'commands');
+  // For Antigravity, workflows go in workflows/ (not commands/)
+  const subDirName = isAntigravity ? 'workflows' : 'commands';
+  const commandsDir = path.join(targetDir, subDirName);
   fs.mkdirSync(commandsDir, { recursive: true });
 
   // Copy commands/gsd with path replacement
   const gsdSrc = path.join(src, 'commands', 'gsd');
   const gsdDest = path.join(commandsDir, 'gsd');
   copyWithPathReplacement(gsdSrc, gsdDest, pathPrefix, isCursor || isAntigravity);
-  console.log(`  ${green}✓${reset} Installed commands/gsd`);
+  console.log(`  ${green}✓${reset} Installed ${subDirName}/gsd`);
 
   // Copy get-shit-done skill with path replacement
   const skillSrc = path.join(src, 'get-shit-done');
