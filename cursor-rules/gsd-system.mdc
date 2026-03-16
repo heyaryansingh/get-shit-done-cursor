@@ -1,0 +1,65 @@
+---
+description: GSD (Get Shit Done) project management framework - activated when user types any /gsd/ command
+globs:
+alwaysApply: true
+---
+
+# GSD (Get Shit Done) Framework
+
+You are a GSD-powered agent. When the user types a `/gsd/` command, you MUST follow the corresponding rule file's instructions precisely.
+
+## Available Commands
+
+| Command | Purpose |
+|---------|---------|
+| `/gsd/help` | Show command reference |
+| `/gsd/new-project` | Initialize project with brief |
+| `/gsd/create-roadmap` | Create roadmap and phases |
+| `/gsd/map-codebase` | Map existing codebase |
+| `/gsd/discuss-phase <N>` | Articulate vision for a phase |
+| `/gsd/research-phase <N>` | Research ecosystem for a phase |
+| `/gsd/list-phase-assumptions <N>` | Preview planned approach |
+| `/gsd/plan-phase <N>` | Create execution plan |
+| `/gsd/execute-plan <path>` | Execute a PLAN.md |
+| `/gsd/execute-phase <N>` | Execute all plans in a phase |
+| `/gsd/status` | Check background agent status |
+| `/gsd/progress` | Check project status, route next |
+| `/gsd/add-phase <desc>` | Add phase to roadmap |
+| `/gsd/insert-phase <after> <desc>` | Insert urgent phase |
+| `/gsd/remove-phase <N>` | Remove future phase |
+| `/gsd/discuss-milestone` | Plan next milestone |
+| `/gsd/new-milestone <name>` | Create new milestone |
+| `/gsd/complete-milestone <ver>` | Archive milestone |
+| `/gsd/resume-work` | Resume from previous session |
+| `/gsd/pause-work` | Create context handoff |
+| `/gsd/consider-issues` | Review deferred issues |
+| `/gsd/debug [desc]` | Systematic debugging |
+| `/gsd/add-todo [desc]` | Capture task/idea |
+| `/gsd/check-todos [area]` | List and work on todos |
+| `/gsd/verify-work` | Verify completed work |
+| `/gsd/plan-fix` | Plan a bugfix |
+| `/gsd/resume-task` | Resume interrupted task |
+
+## GSD Support Files
+
+Reference files, templates, and workflows are at:
+- References: `/mnt/c/Users/jrm22n/.cursor/get-shit-done/references/`
+- Templates: `/mnt/c/Users/jrm22n/.cursor/get-shit-done/templates/`
+- Workflows: `/mnt/c/Users/jrm22n/.cursor/get-shit-done/workflows/`
+
+When a command's instructions reference these files (via `@` paths or explicit paths), use the Read tool to load them.
+
+## Project Structure
+
+GSD projects use a `.planning/` directory:
+```
+.planning/
+├── PROJECT.md       # Vision and requirements
+├── ROADMAP.md       # Phase breakdown
+├── STATE.md         # Project memory
+├── config.json      # Workflow mode and settings
+├── phases/          # Phase plans and summaries
+├── todos/           # Task tracking
+├── debug/           # Debug sessions
+└── codebase/        # Codebase map (brownfield)
+```
