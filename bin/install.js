@@ -187,6 +187,26 @@ function copyWithPathReplacement(srcDir, destDir, pathPrefix, useSlashSyntax) {
   }
 }
 
+
+/**
+ * On WSL, Cursor runs on Windows — must write to Windows .cursor dir,
+ * not the WSL home directory which Cursor cannot see.
+ */
+function resolveWSLCursorHome() {
+  try {
+    const isWSL = process.platform === 'linux' &&
+      fs.existsSync('/proc/version') &&
+      fs.readFileSync('/proc/version', 'utf8').toLowerCase().includes('microsoft');
+    const winProfile = require('child_process')
+      .execSync('cmd.exe /c "echo %USERPROFILE%"', { encoding: 'utf8' })
+      .trim()
+      .replace(/\r/g, '')
+      .replace(/^C:\\/, '/mnt/c/')
+      .replace(/\\/g, '/');
+    return winProfile + '/.cursor';
+  } catch { return null; }
+}
+
 /**
  * Install to the specified directory
  */
@@ -217,7 +237,8 @@ function install(isGlobal) {
   if (isAntigravity) {
     targetDir = path.join(process.cwd(), '.agent');
   } else {
-    const defaultGlobalDir = configDir || path.join(os.homedir(), defaultDirName);
+    const wslCursorHome = isCursor ? resolveWSLCursorHome() : null;
+    const defaultGlobalDir = configDir || wslCursorHome || path.join(os.homedir(), defaultDirName);
     targetDir = isGlobal
       ? defaultGlobalDir
       : path.join(process.cwd(), defaultDirName);
