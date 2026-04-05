@@ -1,15 +1,25 @@
 #!/usr/bin/env node
 
+/**
+ * @fileoverview Installation script for Get Shit Done (GSD) system.
+ * Supports installation to Claude Code, Cursor IDE, and Antigravity platforms.
+ * @module bin/install
+ */
+
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const readline = require('readline');
 
-// Colors
+/** @constant {string} ANSI escape code for cyan text */
 const cyan = '\x1b[36m';
+/** @constant {string} ANSI escape code for green text */
 const green = '\x1b[32m';
+/** @constant {string} ANSI escape code for yellow text */
 const yellow = '\x1b[33m';
+/** @constant {string} ANSI escape code for dim text */
 const dim = '\x1b[2m';
+/** @constant {string} ANSI escape code to reset text formatting */
 const reset = '\x1b[0m';
 
 // Get version from package.json
@@ -105,7 +115,13 @@ if (hasHelp) {
 }
 
 /**
- * Expand ~ to home directory (shell doesn't expand in env vars passed to node)
+ * Expand tilde (~) to home directory path.
+ * Shell doesn't expand ~ in environment variables passed to node.
+ *
+ * @param {string|null|undefined} filePath - The file path that may contain ~
+ * @returns {string|null|undefined} The expanded path, or the original value if not applicable
+ * @example
+ * expandTilde('~/Documents') // Returns '/home/user/Documents' on Linux
  */
 function expandTilde(filePath) {
   if (filePath && filePath.startsWith('~/')) {
@@ -115,9 +131,14 @@ function expandTilde(filePath) {
 }
 
 /**
- * Transform content for Cursor IDE
- * - Convert command syntax from gsd: to gsd/
- * - Convert /clear to "start a new chat" instructions
+ * Transform markdown content for Cursor IDE compatibility.
+ * Converts command syntax and platform-specific instructions.
+ *
+ * @param {string} content - The markdown content to transform
+ * @returns {string} The transformed content with Cursor-compatible syntax
+ * @description
+ * - Converts command syntax from gsd: to gsd/
+ * - Converts /clear references to "start a new chat" instructions
  */
 function transformForCursor(content) {
   // Convert name: field in frontmatter (gsd:command -> gsd/command)
@@ -148,7 +169,12 @@ function transformForCursor(content) {
 }
 
 /**
- * Recursively copy directory, replacing paths in .md files
+ * Recursively copy directory with path replacement in markdown and JSON files.
+ *
+ * @param {string} srcDir - Source directory to copy from
+ * @param {string} destDir - Destination directory to copy to
+ * @param {string} pathPrefix - Path prefix to use for file references
+ * @param {boolean} useSlashSyntax - Whether to use slash syntax (for Cursor/Antigravity)
  */
 function copyWithPathReplacement(srcDir, destDir, pathPrefix, useSlashSyntax) {
   fs.mkdirSync(destDir, { recursive: true });
@@ -188,7 +214,9 @@ function copyWithPathReplacement(srcDir, destDir, pathPrefix, useSlashSyntax) {
 }
 
 /**
- * Install to the specified directory
+ * Install GSD to the specified directory.
+ *
+ * @param {boolean} isGlobal - Whether to install globally (true) or locally (false)
  */
 function install(isGlobal) {
   const src = path.join(__dirname, '..');
@@ -270,7 +298,8 @@ function install(isGlobal) {
 }
 
 /**
- * Prompt for install location
+ * Prompt user interactively for install location.
+ * Offers choice between global and local installation.
  */
 function promptLocation() {
   const rl = readline.createInterface({
